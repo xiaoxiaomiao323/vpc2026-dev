@@ -56,10 +56,10 @@ class InferenceWhisperASR:
         self.device = device
         torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
         self.language_map: dict = {
-            "en": "english",
-            "de": "german",
-            "fr": "french",
-            "es": "spanish",
+            "en": "en",
+            "de": "de",
+            "fr": "fr",
+            "es": "es",
             "zh": "cn",
             "ja": "ja",
         }
@@ -77,6 +77,7 @@ class InferenceWhisperASR:
             feature_extractor=processor.feature_extractor,
             torch_dtype=torch_dtype,
             device=device,
+            return_timestamps=False,  # Disable timestamps to improve batch processing efficiency
         )
 
 
@@ -119,9 +120,18 @@ class InferenceWhisperASR:
             wav_files = list(wav_files)
             print(wav_files[0])
             language = None
-            for k, v in self.language_map.items():
-                if v in str(wav_files[0]):
-                    language = k
+            wav_path_str = str(wav_files[0]).lower()
+            # Extract language from path segments (e.g., /cn/, /en/, /fr/)
+            # Split path into segments and check each segment exactly matches a language code
+            # This avoids false positives like "es" matching in "test"
+            path_segments = re.split(r'[/\\]', wav_path_str)
+            for segment in path_segments:
+                # Check if this segment exactly matches a language code or its mapped value
+                for k, v in self.language_map.items():
+                    if segment == k or segment == v:
+                        language = k
+                        break
+                if language:
                     break
             
             generate_kwargs = {"language": language} if language else {}

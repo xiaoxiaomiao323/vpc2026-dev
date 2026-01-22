@@ -115,7 +115,7 @@ Total audio files: 9997
 Warning: 3 utterances in transcripts have no corresponding audio files
   Sample missing utterances: ['jvs030_VOICEACTRESS100_045', 'jvs074_VOICEACTRESS100_094', 'jvs089_VOICEACTRESS100_019']
 
-Loaded gender information for 100 speakers from ../corpora/ja/jvs_ver1/gender_f0range.txt
+Loaded gender information for 100 speakers from ../corpora/ja/gender_f0range.txt
 Speakers in spk2utt: 100
 Speakers with gender info: 100
 Sample speaker IDs in spk2utt: ['jvs001', 'jvs002', 'jvs003', 'jvs004', 'jvs005']

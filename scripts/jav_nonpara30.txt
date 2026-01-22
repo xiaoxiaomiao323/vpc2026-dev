@@ -116,7 +116,7 @@ Warning: 2000 utterances in transcripts have no corresponding audio files
   Sample missing utterances: ['jvs001_BASIC5000_0260', 'jvs001_BASIC5000_0296', 'jvs001_BASIC5000_0927', 'jvs001_BASIC5000_0945', 'jvs001_BASIC5000_1050', 'jvs001_BASIC5000_1307', 'jvs001_BASIC5000_1375', 'jvs001_BASIC5000_1721', 'jvs001_BASIC5000_2556', 'jvs001_BASIC5000_2599']
   ... and 1990 more
 
-Loaded gender information for 100 speakers from ../corpora/ja/jvs_ver1/gender_f0range.txt
+Loaded gender information for 100 speakers from ../corpora/ja/gender_f0range.txt
 Speakers in spk2utt: 100
 Speakers with gender info: 100
 Sample speaker IDs in spk2utt: ['jvs001', 'jvs002', 'jvs003', 'jvs004', 'jvs005']

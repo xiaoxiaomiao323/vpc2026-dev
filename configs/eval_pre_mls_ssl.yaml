@@ -30,14 +30,6 @@ datasets:
     data: ja_test_parallel100
     enrolls: [_enrolls]
     trials: [_trials_f, _trials_m]  
-  - name: ja_dev_both
-    data: ja_dev_both
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]
-  - name: ja_test_both
-    data: ja_test_both
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]
   - name: en_dev
     data: en_dev
     enrolls: [_enrolls]
@@ -72,8 +64,8 @@ datasets:
     trials: [_trials_f, _trials_m]
 
 eval_steps:  # all metrics in this list will be computed in the evaluation. Remove entry to skip
-  #privacy:
-  #  - asv
+  privacy:
+    - asv
   utility:
     - asr
 
@@ -87,6 +79,7 @@ privacy:
       model_dir: !ref <exp_dir>/<privacy[asv][model_name]>  # path to existing ASV model or output for trained ASV model
       results_dir: !ref <exp_dir>/<privacy[asv][model_name]>  # path to save evaluation results
       distance: cosine  # cosine or plda
+      compute_per_speaker_eer: true
       plda:   # ignored if distance is not plda
         model_dir: null  # path to trained PLDA or output of PLDA training
         train_data_dir: null # path to PLDA training data

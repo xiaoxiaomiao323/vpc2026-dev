@@ -1,280 +1,7 @@
-=== mls_french ===
+=== de ===
 
 ================================================================================
-Statistics for mls_french dev
-================================================================================
-
-| Subset | Trials | Female | Male | Total | Speakers |
-| --- | --- | --- | --- | --- | --- |
-| MLS German dev | Same-speaker | 1043 | 1002 | 2045 | Female 9 / Male 9 (total 18) |
-| MLS German dev | Different-speaker | 8344 | 8016 | 16360 | Female 9 / Male 9 (total 18) |
-
-Overall Statistics:
-  Total speakers: 18 (Female: 9, Male: 9)
-  Total utterances: 2416
-  Enrollment utterances: 371 (15.4%)
-  Trial utterances: 2045 (84.6%)
-  Total trials: 18405
-    Target trials: 2045
-    Nontarget trials: 16360
-  Enrollment ratio: 15.0%
-
-Per-Speaker Statistics:
-Speaker         Gender   Total    Enroll   Trial    Target     Nontarget   
---------------------------------------------------------------------------------
-10087           F        103      16       87       87         956         
-10177           F        157      24       133      133        910         
-12205           F        96       15       81       81         962         
-1591            F        120      18       102      102        941         
-1770            M        157      24       133      133        869         
-3267            F        122      19       103      103        940         
-4193            M        159      24       135      135        867         
-4724            M        95       15       80       80         922         
-4937            M        99       15       84       84         918         
-577             F        163      25       138      138        905         
-579             F        154      24       130      130        913         
-5830            F        153      23       130      130        913         
-6318            M        82       13       69       69         933         
-7142            M        161      25       136      136        866         
-7591            F        164      25       139      139        904         
-7601            M        158      24       134      134        868         
-8128            M        111      17       94       94         908         
-928             M        162      25       137      137        865         
-
-Gender-based Statistics:
-  Female:
-    Speakers: 9
-    Total utterances: 1232
-    Enrollment utterances: 189
-    Trial utterances: 1043
-    Target trials: 1043
-    Nontarget trials: 8344
-  Male:
-    Speakers: 9
-    Total utterances: 1184
-    Enrollment utterances: 182
-    Trial utterances: 1002
-    Target trials: 1002
-    Nontarget trials: 8016
-
-================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_french dev)
-================================================================================
-
-10087 (F) - 103 total utterances:
-  Enrollment (16 utterances):
-  Trial (87 utterances):
-
-10177 (F) - 157 total utterances:
-  Enrollment (24 utterances):
-  Trial (133 utterances):
-
-12205 (F) - 96 total utterances:
-  Enrollment (15 utterances):
-  Trial (81 utterances):
-
-1591 (F) - 120 total utterances:
-  Enrollment (18 utterances):
-  Trial (102 utterances):
-
-1770 (M) - 157 total utterances:
-  Enrollment (24 utterances):
-  Trial (133 utterances):
-
-3267 (F) - 122 total utterances:
-  Enrollment (19 utterances):
-  Trial (103 utterances):
-
-4193 (M) - 159 total utterances:
-  Enrollment (24 utterances):
-  Trial (135 utterances):
-
-4724 (M) - 95 total utterances:
-  Enrollment (15 utterances):
-  Trial (80 utterances):
-
-4937 (M) - 99 total utterances:
-  Enrollment (15 utterances):
-  Trial (84 utterances):
-
-577 (F) - 163 total utterances:
-  Enrollment (25 utterances):
-  Trial (138 utterances):
-
-579 (F) - 154 total utterances:
-  Enrollment (24 utterances):
-  Trial (130 utterances):
-
-5830 (F) - 153 total utterances:
-  Enrollment (23 utterances):
-  Trial (130 utterances):
-
-6318 (M) - 82 total utterances:
-  Enrollment (13 utterances):
-  Trial (69 utterances):
-
-7142 (M) - 161 total utterances:
-  Enrollment (25 utterances):
-  Trial (136 utterances):
-
-7591 (F) - 164 total utterances:
-  Enrollment (25 utterances):
-  Trial (139 utterances):
-
-7601 (M) - 158 total utterances:
-  Enrollment (24 utterances):
-  Trial (134 utterances):
-
-8128 (M) - 111 total utterances:
-  Enrollment (17 utterances):
-  Trial (94 utterances):
-
-928 (M) - 162 total utterances:
-  Enrollment (25 utterances):
-  Trial (137 utterances):
-
-================================================================================
-
-
-================================================================================
-Statistics for mls_french test
-================================================================================
-
-| Subset | Trials | Female | Male | Total | Speakers |
-| --- | --- | --- | --- | --- | --- |
-| MLS German test | Same-speaker | 1026 | 1028 | 2054 | Female 9 / Male 9 (total 18) |
-| MLS German test | Different-speaker | 8208 | 8224 | 16432 | Female 9 / Male 9 (total 18) |
-
-Overall Statistics:
-  Total speakers: 18 (Female: 9, Male: 9)
-  Total utterances: 2426
-  Enrollment utterances: 372 (15.3%)
-  Trial utterances: 2054 (84.7%)
-  Total trials: 18486
-    Target trials: 2054
-    Nontarget trials: 16432
-  Enrollment ratio: 15.0%
-
-Per-Speaker Statistics:
-Speaker         Gender   Total    Enroll   Trial    Target     Nontarget   
---------------------------------------------------------------------------------
-10179           F        157      24       133      133        893         
-12080           F        160      24       136      136        890         
-12977           F        159      24       135      135        891         
-1406            M        162      25       137      137        891         
-2085            F        85       13       72       72         954         
-2114            M        83       13       70       70         958         
-2154            F        117      18       99       99         927         
-2216            M        129      20       109      109        919         
-2223            M        164      25       139      139        889         
-2465            M        161      25       136      136        892         
-296             M        98       15       83       83         945         
-4482            M        97       15       82       82         946         
-5207            F        114      18       96       96         930         
-5476            F        163      25       138      138        888         
-5790            M        160      24       136      136        892         
-7400            F        156      24       132      132        894         
-7762            F        100      15       85       85         941         
-9834            M        161      25       136      136        892         
-
-Gender-based Statistics:
-  Female:
-    Speakers: 9
-    Total utterances: 1211
-    Enrollment utterances: 185
-    Trial utterances: 1026
-    Target trials: 1026
-    Nontarget trials: 8208
-  Male:
-    Speakers: 9
-    Total utterances: 1215
-    Enrollment utterances: 187
-    Trial utterances: 1028
-    Target trials: 1028
-    Nontarget trials: 8224
-
-================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_french test)
-================================================================================
-
-10179 (F) - 157 total utterances:
-  Enrollment (24 utterances):
-  Trial (133 utterances):
-
-12080 (F) - 160 total utterances:
-  Enrollment (24 utterances):
-  Trial (136 utterances):
-
-12977 (F) - 159 total utterances:
-  Enrollment (24 utterances):
-  Trial (135 utterances):
-
-1406 (M) - 162 total utterances:
-  Enrollment (25 utterances):
-  Trial (137 utterances):
-
-2085 (F) - 85 total utterances:
-  Enrollment (13 utterances):
-  Trial (72 utterances):
-
-2114 (M) - 83 total utterances:
-  Enrollment (13 utterances):
-  Trial (70 utterances):
-
-2154 (F) - 117 total utterances:
-  Enrollment (18 utterances):
-  Trial (99 utterances):
-
-2216 (M) - 129 total utterances:
-  Enrollment (20 utterances):
-  Trial (109 utterances):
-
-2223 (M) - 164 total utterances:
-  Enrollment (25 utterances):
-  Trial (139 utterances):
-
-2465 (M) - 161 total utterances:
-  Enrollment (25 utterances):
-  Trial (136 utterances):
-
-296 (M) - 98 total utterances:
-  Enrollment (15 utterances):
-  Trial (83 utterances):
-
-4482 (M) - 97 total utterances:
-  Enrollment (15 utterances):
-  Trial (82 utterances):
-
-5207 (F) - 114 total utterances:
-  Enrollment (18 utterances):
-  Trial (96 utterances):
-
-5476 (F) - 163 total utterances:
-  Enrollment (25 utterances):
-  Trial (138 utterances):
-
-5790 (M) - 160 total utterances:
-  Enrollment (24 utterances):
-  Trial (136 utterances):
-
-7400 (F) - 156 total utterances:
-  Enrollment (24 utterances):
-  Trial (132 utterances):
-
-7762 (F) - 100 total utterances:
-  Enrollment (15 utterances):
-  Trial (85 utterances):
-
-9834 (M) - 161 total utterances:
-  Enrollment (25 utterances):
-  Trial (136 utterances):
-
-================================================================================
-
-=== mls_german ===
-
-================================================================================
-Statistics for mls_german dev
+Statistics for de dev
 ================================================================================
 
 | Subset | Trials | Female | Male | Total | Speakers |
@@ -343,7 +70,7 @@ Gender-based Statistics:
     Nontarget trials: 20776
 
 ================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_german dev)
+UTTERANCES FOR EACH SPEAKER (de dev)
 ================================================================================
 
 10349 (F) - 98 total utterances:
@@ -470,7 +197,7 @@ UTTERANCES FOR EACH SPEAKER (mls_german dev)
 
 
 ================================================================================
-Statistics for mls_german test
+Statistics for de test
 ================================================================================
 
 | Subset | Trials | Female | Male | Total | Speakers |
@@ -539,7 +266,7 @@ Gender-based Statistics:
     Nontarget trials: 20160
 
 ================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_german test)
+UTTERANCES FOR EACH SPEAKER (de test)
 ================================================================================
 
 1054 (M) - 121 total utterances:
@@ -664,10 +391,283 @@ UTTERANCES FOR EACH SPEAKER (mls_german test)
 
 ================================================================================
 
-=== mls_spanish ===
+=== fr ===
 
 ================================================================================
-Statistics for mls_spanish dev
+Statistics for fr dev
+================================================================================
+
+| Subset | Trials | Female | Male | Total | Speakers |
+| --- | --- | --- | --- | --- | --- |
+| MLS German dev | Same-speaker | 1043 | 1002 | 2045 | Female 9 / Male 9 (total 18) |
+| MLS German dev | Different-speaker | 8344 | 8016 | 16360 | Female 9 / Male 9 (total 18) |
+
+Overall Statistics:
+  Total speakers: 18 (Female: 9, Male: 9)
+  Total utterances: 2416
+  Enrollment utterances: 371 (15.4%)
+  Trial utterances: 2045 (84.6%)
+  Total trials: 18405
+    Target trials: 2045
+    Nontarget trials: 16360
+  Enrollment ratio: 15.0%
+
+Per-Speaker Statistics:
+Speaker         Gender   Total    Enroll   Trial    Target     Nontarget   
+--------------------------------------------------------------------------------
+10087           F        103      16       87       87         956         
+10177           F        157      24       133      133        910         
+12205           F        96       15       81       81         962         
+1591            F        120      18       102      102        941         
+1770            M        157      24       133      133        869         
+3267            F        122      19       103      103        940         
+4193            M        159      24       135      135        867         
+4724            M        95       15       80       80         922         
+4937            M        99       15       84       84         918         
+577             F        163      25       138      138        905         
+579             F        154      24       130      130        913         
+5830            F        153      23       130      130        913         
+6318            M        82       13       69       69         933         
+7142            M        161      25       136      136        866         
+7591            F        164      25       139      139        904         
+7601            M        158      24       134      134        868         
+8128            M        111      17       94       94         908         
+928             M        162      25       137      137        865         
+
+Gender-based Statistics:
+  Female:
+    Speakers: 9
+    Total utterances: 1232
+    Enrollment utterances: 189
+    Trial utterances: 1043
+    Target trials: 1043
+    Nontarget trials: 8344
+  Male:
+    Speakers: 9
+    Total utterances: 1184
+    Enrollment utterances: 182
+    Trial utterances: 1002
+    Target trials: 1002
+    Nontarget trials: 8016
+
+================================================================================
+UTTERANCES FOR EACH SPEAKER (fr dev)
+================================================================================
+
+10087 (F) - 103 total utterances:
+  Enrollment (16 utterances):
+  Trial (87 utterances):
+
+10177 (F) - 157 total utterances:
+  Enrollment (24 utterances):
+  Trial (133 utterances):
+
+12205 (F) - 96 total utterances:
+  Enrollment (15 utterances):
+  Trial (81 utterances):
+
+1591 (F) - 120 total utterances:
+  Enrollment (18 utterances):
+  Trial (102 utterances):
+
+1770 (M) - 157 total utterances:
+  Enrollment (24 utterances):
+  Trial (133 utterances):
+
+3267 (F) - 122 total utterances:
+  Enrollment (19 utterances):
+  Trial (103 utterances):
+
+4193 (M) - 159 total utterances:
+  Enrollment (24 utterances):
+  Trial (135 utterances):
+
+4724 (M) - 95 total utterances:
+  Enrollment (15 utterances):
+  Trial (80 utterances):
+
+4937 (M) - 99 total utterances:
+  Enrollment (15 utterances):
+  Trial (84 utterances):
+
+577 (F) - 163 total utterances:
+  Enrollment (25 utterances):
+  Trial (138 utterances):
+
+579 (F) - 154 total utterances:
+  Enrollment (24 utterances):
+  Trial (130 utterances):
+
+5830 (F) - 153 total utterances:
+  Enrollment (23 utterances):
+  Trial (130 utterances):
+
+6318 (M) - 82 total utterances:
+  Enrollment (13 utterances):
+  Trial (69 utterances):
+
+7142 (M) - 161 total utterances:
+  Enrollment (25 utterances):
+  Trial (136 utterances):
+
+7591 (F) - 164 total utterances:
+  Enrollment (25 utterances):
+  Trial (139 utterances):
+
+7601 (M) - 158 total utterances:
+  Enrollment (24 utterances):
+  Trial (134 utterances):
+
+8128 (M) - 111 total utterances:
+  Enrollment (17 utterances):
+  Trial (94 utterances):
+
+928 (M) - 162 total utterances:
+  Enrollment (25 utterances):
+  Trial (137 utterances):
+
+================================================================================
+
+
+================================================================================
+Statistics for fr test
+================================================================================
+
+| Subset | Trials | Female | Male | Total | Speakers |
+| --- | --- | --- | --- | --- | --- |
+| MLS German test | Same-speaker | 1026 | 1028 | 2054 | Female 9 / Male 9 (total 18) |
+| MLS German test | Different-speaker | 8208 | 8224 | 16432 | Female 9 / Male 9 (total 18) |
+
+Overall Statistics:
+  Total speakers: 18 (Female: 9, Male: 9)
+  Total utterances: 2426
+  Enrollment utterances: 372 (15.3%)
+  Trial utterances: 2054 (84.7%)
+  Total trials: 18486
+    Target trials: 2054
+    Nontarget trials: 16432
+  Enrollment ratio: 15.0%
+
+Per-Speaker Statistics:
+Speaker         Gender   Total    Enroll   Trial    Target     Nontarget   
+--------------------------------------------------------------------------------
+10179           F        157      24       133      133        893         
+12080           F        160      24       136      136        890         
+12977           F        159      24       135      135        891         
+1406            M        162      25       137      137        891         
+2085            F        85       13       72       72         954         
+2114            M        83       13       70       70         958         
+2154            F        117      18       99       99         927         
+2216            M        129      20       109      109        919         
+2223            M        164      25       139      139        889         
+2465            M        161      25       136      136        892         
+296             M        98       15       83       83         945         
+4482            M        97       15       82       82         946         
+5207            F        114      18       96       96         930         
+5476            F        163      25       138      138        888         
+5790            M        160      24       136      136        892         
+7400            F        156      24       132      132        894         
+7762            F        100      15       85       85         941         
+9834            M        161      25       136      136        892         
+
+Gender-based Statistics:
+  Female:
+    Speakers: 9
+    Total utterances: 1211
+    Enrollment utterances: 185
+    Trial utterances: 1026
+    Target trials: 1026
+    Nontarget trials: 8208
+  Male:
+    Speakers: 9
+    Total utterances: 1215
+    Enrollment utterances: 187
+    Trial utterances: 1028
+    Target trials: 1028
+    Nontarget trials: 8224
+
+================================================================================
+UTTERANCES FOR EACH SPEAKER (fr test)
+================================================================================
+
+10179 (F) - 157 total utterances:
+  Enrollment (24 utterances):
+  Trial (133 utterances):
+
+12080 (F) - 160 total utterances:
+  Enrollment (24 utterances):
+  Trial (136 utterances):
+
+12977 (F) - 159 total utterances:
+  Enrollment (24 utterances):
+  Trial (135 utterances):
+
+1406 (M) - 162 total utterances:
+  Enrollment (25 utterances):
+  Trial (137 utterances):
+
+2085 (F) - 85 total utterances:
+  Enrollment (13 utterances):
+  Trial (72 utterances):
+
+2114 (M) - 83 total utterances:
+  Enrollment (13 utterances):
+  Trial (70 utterances):
+
+2154 (F) - 117 total utterances:
+  Enrollment (18 utterances):
+  Trial (99 utterances):
+
+2216 (M) - 129 total utterances:
+  Enrollment (20 utterances):
+  Trial (109 utterances):
+
+2223 (M) - 164 total utterances:
+  Enrollment (25 utterances):
+  Trial (139 utterances):
+
+2465 (M) - 161 total utterances:
+  Enrollment (25 utterances):
+  Trial (136 utterances):
+
+296 (M) - 98 total utterances:
+  Enrollment (15 utterances):
+  Trial (83 utterances):
+
+4482 (M) - 97 total utterances:
+  Enrollment (15 utterances):
+  Trial (82 utterances):
+
+5207 (F) - 114 total utterances:
+  Enrollment (18 utterances):
+  Trial (96 utterances):
+
+5476 (F) - 163 total utterances:
+  Enrollment (25 utterances):
+  Trial (138 utterances):
+
+5790 (M) - 160 total utterances:
+  Enrollment (24 utterances):
+  Trial (136 utterances):
+
+7400 (F) - 156 total utterances:
+  Enrollment (24 utterances):
+  Trial (132 utterances):
+
+7762 (F) - 100 total utterances:
+  Enrollment (15 utterances):
+  Trial (85 utterances):
+
+9834 (M) - 161 total utterances:
+  Enrollment (25 utterances):
+  Trial (136 utterances):
+
+================================================================================
+
+=== es ===
+
+================================================================================
+Statistics for es dev
 ================================================================================
 
 | Subset | Trials | Female | Male | Total | Speakers |
@@ -726,7 +726,7 @@ Gender-based Statistics:
     Nontarget trials: 9360
 
 ================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_spanish dev)
+UTTERANCES FOR EACH SPEAKER (es dev)
 ================================================================================
 
 10367 (M) - 85 total utterances:
@@ -813,7 +813,7 @@ UTTERANCES FOR EACH SPEAKER (mls_spanish dev)
 
 
 ================================================================================
-Statistics for mls_spanish test
+Statistics for es test
 ================================================================================
 
 | Subset | Trials | Female | Male | Total | Speakers |
@@ -872,7 +872,7 @@ Gender-based Statistics:
     Nontarget trials: 9639
 
 ================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_spanish test)
+UTTERANCES FOR EACH SPEAKER (es test)
 ================================================================================
 
 10667 (M) - 157 total utterances:
@@ -957,10 +957,10 @@ UTTERANCES FOR EACH SPEAKER (mls_spanish test)
 
 ================================================================================
 
-=== mls_english ===
+=== en ===
 
 ================================================================================
-Statistics for mls_english dev
+Statistics for en dev
 ================================================================================
 
 | Subset | Trials | Female | Male | Total | Speakers |
@@ -1041,7 +1041,7 @@ Gender-based Statistics:
     Nontarget trials: 32640
 
 ================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_english dev)
+UTTERANCES FOR EACH SPEAKER (en dev)
 ================================================================================
 
 10118 (M) - 94 total utterances:
@@ -1216,7 +1216,7 @@ UTTERANCES FOR EACH SPEAKER (mls_english dev)
 
 
 ================================================================================
-Statistics for mls_english test
+Statistics for en test
 ================================================================================
 
 | Subset | Trials | Female | Male | Total | Speakers |
@@ -1297,7 +1297,7 @@ Gender-based Statistics:
     Nontarget trials: 32260
 
 ================================================================================
-UTTERANCES FOR EACH SPEAKER (mls_english test)
+UTTERANCES FOR EACH SPEAKER (en test)
 ================================================================================
 
 10226 (F) - 97 total utterances:

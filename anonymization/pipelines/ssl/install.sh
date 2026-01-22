@@ -26,11 +26,15 @@ fi
 # Download SSL pre-models only if perform SSL anonymization
 if [ ! -d exp/ssl_models ]; then
     echo "Download pretrained models of SSL-based speaker anonymization system..."
-    mkdir -p exp/ssl_models
-    wget  -O exp/ssl_models/pretrained_models_anon_xv.tar.gz https://zenodo.org/record/6529898/files/pretrained_models_anon_xv.tar.gz
-    tar -xzvf exp/ssl_models/pretrained_models_anon_xv.tar.gz -C exp/ssl_models
-    wget  -O exp/ssl_models/hubert_base_ls960.pt https://dl.fbaipublicfiles.com/hubert/hubert_base_ls960.pt
-    rm exp/ssl_models/*.tar.gz
+    mkdir -p exp/
+    cd exp/
+    wget  -O ssl_models.zip https://duke.app.box.com/shared/static/aolbk5ptoa069fjn06l05oqzidd1lsjy
+    unzip ssl_models.zip
+    wget  -O ssl_models/hubert_base_ls960.pt https://dl.fbaipublicfiles.com/hubert/hubert_base_ls960.pt
+    cd ../
+    #wget  -O exp/ssl_models/pretrained_models_anon_xv.tar.gz https://zenodo.org/record/6529898/files/pretrained_models_anon_xv.tar.gz
+    #tar -xzvf exp/ssl_models/pretrained_models_anon_xv.tar.gz -C exp/ssl_models
+    #rm exp/ssl_models/*.tar.gz
 fi
 
 
