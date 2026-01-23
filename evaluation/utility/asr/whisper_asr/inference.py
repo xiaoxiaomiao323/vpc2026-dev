@@ -121,18 +121,29 @@ class InferenceWhisperASR:
             print(wav_files[0])
             language = None
             wav_path_str = str(wav_files[0]).lower()
-            # Extract language from path segments (e.g., /cn/, /en/, /fr/)
-            # Split path into segments and check each segment exactly matches a language code
-            # This avoids false positives like "es" matching in "test"
+            # Extract language from path segments
+            # Handle two path formats:
+            # 1. corpora/en/dev/... or corpora/cn/test/... (language as separate segment)
+            # 2. data/en_dev_trials_f_ssl/wav/... (language embedded in directory name)
             path_segments = re.split(r'[/\\]', wav_path_str)
             for segment in path_segments:
-                # Check if this segment exactly matches a language code or its mapped value
+                # First check if segment exactly matches a language code
                 for k, v in self.language_map.items():
                     if segment == k or segment == v:
                         language = k
                         break
                 if language:
                     break
+                
+                # If no exact match, check if segment starts with language code (e.g., "en_dev_trials_f_ssl")
+                if not language:
+                    for k, v in self.language_map.items():
+                        # Check if segment starts with language code followed by underscore or end of string
+                        if segment.startswith(f'{k}_') or segment.startswith(f'{v}_'):
+                            language = k
+                            break
+                    if language:
+                        break
             
             generate_kwargs = {"language": language} if language else {}
             print(f"Decoding language: {language}")
