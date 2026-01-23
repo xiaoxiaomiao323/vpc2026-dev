@@ -1,3 +1,11 @@
+
+## Install
+
+1. `git clone ..`
+2. `./00_install.sh`
+3. `source env.sh`
+4. `./01_download_data_model_track2.sh`
+5. `bash 02_run_mls.sh`
 # Recipe for VoicePrivacy Challenge 2024
 
 Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for more information about the Challenge.
