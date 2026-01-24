@@ -51,7 +51,7 @@ compute_and_write_hash() {
 EOF
 source ./env.sh
 
-compute_and_write_hash "requirements.txt"  # SHA256: a3be93df020dfb46ca1a063cd45cd331fa0011f5a7656cd43a62afc210513cb4
+compute_and_write_hash "requirements.txt"  # SHA256: 18198de8f6d028adda206658653ea0139d369b2e6ff24fcab2fe0dbf3ceadecb
 trigger_new_install ".micromamba/micromamba .done-*"
 
 mark=.done-venv
@@ -123,12 +123,7 @@ mark=.done-cuda
 if [ ! -f $mark ]; then
   echo " == Installing cuda =="
   # For CUDA 12.x, use the appropriate channel format
-  if [[ "$CUDA_VERSION" == "12."* ]]; then
-    cuda_channel="nvidia/label/cuda-${CUDA_VERSION}"
-  else
-    cuda_channel="nvidia/label/cuda-${CUDA_VERSION}.0"
-  fi
-  micromamba install -y --prefix "$venv_dir" -c "$cuda_channel" cuda-toolkit || exit 1
+  micromamba install -y --prefix "$venv_dir" -c nvidia -c conda-forge cuda-toolkit==${CUDA_VERSION} || exit 1
   "$venv_dir/bin/nvcc" --version || exit 1
   touch $mark
 fi
@@ -166,6 +161,7 @@ if [ ! -f $mark ]; then
   pip3 install torch$version torchvision$torchvision_version torchaudio$torchaudio_version --force-reinstall --index-url https://download.pytorch.org/whl/cu$pytorch_cuda \
     || { echo "Failed to find pytorch $TORCH_VERSION for cuda '$CUDA_VERSION', use specify other torch/cuda version (with variables in install.sh script)"  ; exit 1; }
   python3 -c "import torch; print('Torch version:', torch.__version__)" || exit 1
+  echo -e "torch$version\ntorchvision$torchvision_version\ntorchaudio$torchaudio_version" > .pip_constraints.txt
   touch $mark
 fi
 
@@ -174,7 +170,7 @@ mark=.done-python-requirements
 if [ ! -f $mark ]; then
   echo " == Installing python libraries =="
 
-  pip3 install -r requirements.txt  || exit 1
+  pip3 install -r requirements.txt -c .pip_constraints.txt  || exit 1
   pip3 install Cython
   touch $mark
 fi

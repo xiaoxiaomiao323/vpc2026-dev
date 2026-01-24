@@ -138,7 +138,6 @@ tensorboardX==2.6.4
 thinc==8.2.5
 threadpoolctl==3.6.0
 tiktoken==0.12.0
-triton==3.5.1
 typer==0.21.0
 typer-slim==0.21.0
 typing-inspection==0.4.2
