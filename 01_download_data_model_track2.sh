@@ -102,7 +102,7 @@ check_data=data/cn_dev_enrolls
 if [ ! -d $check_data ]; then
     if  [ ! -f .mls_langs.zip ]; then
         echo "Download MLS kaldi format datadir..."
-        wget -O mls_langs.zip https://duke.app.box.com/shared/static/vrx6pnmb1ghmggxl1dh9jco8ugss27ni
+        wget -O mls_langs.zip https://duke.app.box.com/shared/static/yfpldfzxhw392g9rchaq2k59uhmlfslf
         mv mls_langs.zip .mls_langs.zip
     fi
     echo "Unpacking .mls_langs.zip"
