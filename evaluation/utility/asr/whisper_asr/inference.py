@@ -118,7 +118,7 @@ class InferenceWhisperASR:
         for batch in tqdm.tqdm(data):
             utt_ids, wav_files = batch
             wav_files = list(wav_files)
-            print(wav_files[0])
+            #print(wav_files[0])
             language = None
             wav_path_str = str(wav_files[0]).lower()
             # Extract language from path segments
@@ -146,7 +146,7 @@ class InferenceWhisperASR:
                         break
             
             generate_kwargs = {"language": language} if language else {}
-            print(f"Decoding language: {language}")
+            #print(f"Decoding language: {language}")
             
             predicts = self.pipe(wav_files, batch_size=len(wav_files), generate_kwargs=generate_kwargs)
             for i, utt_id in enumerate(utt_ids):

@@ -472,4 +472,4 @@ class SelectionBasedAnonymizationPipeline:
         """Reset pipeline caches"""
         self.cached_speaker_vector = None
         self.anonymizer_cache_state = False
-        print("Pipeline cache reset")
+        #print("Pipeline cache reset")
