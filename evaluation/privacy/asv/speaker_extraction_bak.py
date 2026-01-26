@@ -36,7 +36,10 @@ def extraction_job(params):
         wav_path = info['path']
         if isinstance(wav_path, list):
             wav_path = wav_path[1]
-        signal, fs = torchaudio.load(wav_path)
+        try:
+            signal, fs = torchaudio.load_with_torchcodec(wav_path)
+        except AttributeError:
+            signal, fs = torchaudio.load(wav_path)
         # if len(signal.shape) == 2:
         #     signal = signal.squeeze(0)
         norm_wave = normalize_wave(signal, fs, device=device)

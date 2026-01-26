@@ -49,7 +49,10 @@ class ASVDatasetGenerator:
                 start = int(start)
                 stop = int(stop)
             num_frames = stop - start
-            sig, fs = torchaudio.load(wav, num_frames=num_frames, frame_offset=start)
+            try:
+                sig, fs = torchaudio.load_with_torchcodec(wav, num_frames=num_frames, frame_offset=start)
+            except AttributeError:
+                sig, fs = torchaudio.load(wav, num_frames=num_frames, frame_offset=start)
             sig = sig.transpose(0, 1).squeeze(1)
             return sig
         sb.dataio.dataset.add_dynamic_item(datasets, audio_pipeline)
