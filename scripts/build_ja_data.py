@@ -681,16 +681,18 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # Determine which subsets to process
-    if args.subset == "both":
-        subsets_to_process = ["nonpara30", "parallel100"]
-    else:
-        subsets_to_process = [args.subset]
-    
-    # Collect transcripts and audio files from all subsets
+    # Always process both subsets: nonpara30 and parallel100
+    # Then generate three datasets: nonpara30, parallel100, and both
+    subsets_to_process = ["nonpara30", "parallel100"]
     source_dir = args.source_dir
-    all_transcripts = {}
-    all_audio_index = {}
+    
+    # Step 1: Collect data from both subsets and find common speakers
+    print(f"\n{'='*80}")
+    print(f"STEP 1: COLLECTING DATA FROM BOTH SUBSETS")
+    print(f"{'='*80}")
+    
+    subset_data: dict[str, dict] = {}  # Store data per subset
+    subset_speakers: dict[str, set[str]] = {}
     
     for subset_name in subsets_to_process:
         subset_dirs = list(source_dir.glob(f"jvs*/{subset_name}"))
@@ -706,36 +708,84 @@ def main() -> None:
         
         # Load transcripts from this subset
         subset_transcripts = {}
+        subset_speaker_set = set()
         for subset_dir in subset_dirs:
             transcripts_file = subset_dir / "transcripts_utf8.txt"
             if transcripts_file.exists():
                 speaker_id = subset_dir.parent.name  # e.g., jvs001
                 speaker_transcripts = _load_transcripts(transcripts_file, speaker_id)
                 subset_transcripts.update(speaker_transcripts)
+                subset_speaker_set.add(speaker_id)
                 print(f"  Loaded {len(speaker_transcripts)} transcripts from {speaker_id}")
             else:
                 print(f"  Warning: {transcripts_file} not found, skipping")
         
         # Map audio files from this subset
         subset_audio_index = _map_audio_files(source_dir, subset_name)
+        audio_speakers = {speaker for speaker, _ in subset_audio_index.values()}
+        subset_speaker_set.update(audio_speakers)
+        subset_speakers[subset_name] = subset_speaker_set
         
-        # Merge into main dictionaries
-        all_transcripts.update(subset_transcripts)
-        all_audio_index.update(subset_audio_index)
+        subset_data[subset_name] = {
+            'transcripts': subset_transcripts,
+            'audio_index': subset_audio_index,
+        }
         
         print(f"  Total transcripts from {subset_name}: {len(subset_transcripts)}")
         print(f"  Total audio files from {subset_name}: {len(subset_audio_index)}")
+        print(f"  Speakers in {subset_name}: {len(subset_speaker_set)}")
+    
+    # Find common speakers
+    if len(subset_speakers) != 2:
+        raise SystemExit(f"Need exactly 2 subsets, found {len(subset_speakers)}")
+    
+    common_speakers = subset_speakers[subsets_to_process[0]] & subset_speakers[subsets_to_process[1]]
+    print(f"\n{'='*80}")
+    print(f"COMMON SPEAKERS")
+    print(f"{'='*80}")
+    print(f"Speakers in {subsets_to_process[0]}: {len(subset_speakers[subsets_to_process[0]])}")
+    print(f"Speakers in {subsets_to_process[1]}: {len(subset_speakers[subsets_to_process[1]])}")
+    print(f"Common speakers (present in BOTH subsets): {len(common_speakers)}")
+    
+    if not common_speakers:
+        raise SystemExit(f"No common speakers found between {subsets_to_process[0]} and {subsets_to_process[1]}!")
+    
+    # Filter each subset to only include common speakers
+    for subset_name in subsets_to_process:
+        subset_transcripts = subset_data[subset_name]['transcripts']
+        subset_audio_index = subset_data[subset_name]['audio_index']
+        
+        filtered_transcripts = {
+            utt_id: text for utt_id, text in subset_transcripts.items()
+            if any(utt_id.startswith(f"{spk}_") for spk in common_speakers)
+        }
+        filtered_audio_index = {
+            utt_id: (speaker, wav_path) for utt_id, (speaker, wav_path) in subset_audio_index.items()
+            if speaker in common_speakers
+        }
+        
+        subset_data[subset_name]['transcripts'] = filtered_transcripts
+        subset_data[subset_name]['audio_index'] = filtered_audio_index
+        
+        print(f"{subset_name} (filtered to common speakers): {len(filtered_transcripts)} transcripts, {len(filtered_audio_index)} audio files")
+    
+    # Merge data from both subsets for speaker selection
+    all_transcripts = {}
+    all_audio_index = {}
+    for subset_name in subsets_to_process:
+        all_transcripts.update(subset_data[subset_name]['transcripts'])
+        all_audio_index.update(subset_data[subset_name]['audio_index'])
     
     if not all_transcripts:
         raise SystemExit("No transcripts found!")
     
     print(f"\n{'='*80}")
-    print(f"MERGED DATA")
+    print(f"MERGED DATA (for speaker selection)")
     print(f"{'='*80}")
     print(f"Total transcripts: {len(all_transcripts)}")
     print(f"Total audio files: {len(all_audio_index)}")
     
-    # Use merged data
+    # Use merged data for speaker selection
     audio_index = all_audio_index
     
     # Build Kaldi maps
@@ -956,22 +1006,37 @@ def main() -> None:
         if not (0 < ratio_value <= 1):
             raise SystemExit("--enroll-per-spk-ratio must be 0<ratio<=1 or a percentage")
         
-        # Determine subset suffix for file naming
-        subset_suffix = args.subset if args.subset != "both" else "both"
+        print(f"\n{'='*80}")
+        print(f"STEP 2: PROCESSING COMBINED DATASET")
+        print(f"{'='*80}")
+        print(f"✓ Same speakers selected: {len(dev_female + dev_male + test_female + test_male)} speakers")
+        print(f"✓ Combining nonpara30 and parallel100 subsets")
         
-        # Process DEV set
+        # Combine transcripts and audio from both subsets
+        combined_transcripts = {}
+        combined_audio_index = {}
+        for subset_name in subsets_to_process:
+            combined_transcripts.update(subset_data[subset_name]['transcripts'])
+            combined_audio_index.update(subset_data[subset_name]['audio_index'])
+        
+        # Build combined Kaldi maps
+        combined_wav_lines, combined_utt2spk_lines, combined_utt2dur_lines, combined_spk2utt_lines, combined_text_lines, combined_spk2utt = _build_kaldi_maps(
+            combined_transcripts, combined_audio_index
+        )
+        
+        # Process combined DEV set
         _process_single_set(
             dev_female,
             dev_male,
-            spk2utt,
+            combined_spk2utt,
             spk2gender_map,
-            text_lines,
-            wav_lines,
-            utt2spk_lines,
-            utt2dur_lines,
-            spk2utt_lines,
+            combined_text_lines,
+            combined_wav_lines,
+            combined_utt2spk_lines,
+            combined_utt2dur_lines,
+            combined_spk2utt_lines,
             "dev",
-            f"ja_dev_{subset_suffix}",
+            "ja_dev",
             args.data_dir,
             ratio_value,
             args.enroll_seed,
@@ -984,19 +1049,19 @@ def main() -> None:
             args.skip_subsets,
         )
         
-        # Process TEST set
+        # Process combined TEST set
         _process_single_set(
             test_female,
             test_male,
-            spk2utt,
+            combined_spk2utt,
             spk2gender_map,
-            text_lines,
-            wav_lines,
-            utt2spk_lines,
-            utt2dur_lines,
-            spk2utt_lines,
+            combined_text_lines,
+            combined_wav_lines,
+            combined_utt2spk_lines,
+            combined_utt2dur_lines,
+            combined_spk2utt_lines,
             "test",
-            f"ja_test_{subset_suffix}",
+            "ja_test",
             args.data_dir,
             ratio_value,
             args.enroll_seed,
@@ -1041,28 +1106,42 @@ def main() -> None:
         # Use already limited targets from above (or all if not limited)
         female_targets = female_targets_all
     
-    # Process single set (non-split mode)
+    # Process single set (non-split mode) - generate all three datasets
     ratio_raw = args.enroll_per_spk_ratio.strip()
     percent = ratio_raw.endswith("%")
     ratio_value = float(ratio_raw[:-1]) / 100.0 if percent else float(ratio_raw)
     if not (0 < ratio_value <= 1):
         raise SystemExit("--enroll-per-spk-ratio must be 0<ratio<=1 or a percentage")
     
-    # Determine subset suffix for file naming
-    subset_suffix = args.subset if args.subset != "both" else "both"
+    print(f"\n{'='*80}")
+    print(f"PROCESSING COMBINED DATASET")
+    print(f"{'='*80}")
+    print(f"✓ Combining nonpara30 and parallel100 subsets")
+    
+    # Combine transcripts and audio from both subsets
+    combined_transcripts = {}
+    combined_audio_index = {}
+    for subset_name in subsets_to_process:
+        combined_transcripts.update(subset_data[subset_name]['transcripts'])
+        combined_audio_index.update(subset_data[subset_name]['audio_index'])
+    
+    # Build combined Kaldi maps
+    combined_wav_lines, combined_utt2spk_lines, combined_utt2dur_lines, combined_spk2utt_lines, combined_text_lines, combined_spk2utt = _build_kaldi_maps(
+        combined_transcripts, combined_audio_index
+    )
     
     _process_single_set(
         female_targets,
         male_targets,
-        spk2utt,
+        combined_spk2utt,
         spk2gender_map,
-        text_lines,
-        wav_lines,
-        utt2spk_lines,
-        utt2dur_lines,
-        spk2utt_lines,
+        combined_text_lines,
+        combined_wav_lines,
+        combined_utt2spk_lines,
+        combined_utt2dur_lines,
+        combined_spk2utt_lines,
         "jvs",
-        f"ja_{subset_suffix}",
+        "ja",
         args.data_dir,
         ratio_value,
         args.enroll_seed,

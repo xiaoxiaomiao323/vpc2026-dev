@@ -6,6 +6,14 @@ anon_data_suffix: _mcadams # added to transform data/libri_dev/ to data/libri_de
 results_summary_path: !ref <exp_dir>/results_summary/eval_orig<anon_data_suffix>/results_orig.txt
 
 datasets:
+  - name: ja_dev
+    data: ja_dev
+    enrolls: [_enrolls]
+    trials: [_trials_f, _trials_m]
+  - name: ja_test
+    data: ja_test
+    enrolls: [_enrolls]
+    trials: [_trials_f, _trials_m]
   - name: cn_dev
     data: cn_dev
     enrolls: [_enrolls]
@@ -14,36 +22,12 @@ datasets:
     data: cn_test
     enrolls: [_enrolls]
     trials: [_trials_f, _trials_m]
-  - name: ja_dev_nonpara30
-    data: ja_dev_nonpara30
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]
-  - name: ja_test_nonpara30
-    data: ja_test_nonpara30
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]
-  - name: ja_dev_parallel100
-    data: ja_dev_parallel100
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]
-  - name: ja_test_parallel100
-    data: ja_test_parallel100
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]  
   - name: en_dev
     data: en_dev
     enrolls: [_enrolls]
     trials: [_trials_f, _trials_m]
   - name: en_test
     data: en_test
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]
-  - name: de_dev
-    data: de_dev
-    enrolls: [_enrolls]
-    trials: [_trials_f, _trials_m]
-  - name: de_test
-    data: de_test
     enrolls: [_enrolls]
     trials: [_trials_f, _trials_m]
   - name: fr_dev
@@ -62,6 +46,14 @@ datasets:
     data: es_test
     enrolls: [_enrolls]
     trials: [_trials_f, _trials_m]
+  - name: de_dev
+    data: de_dev
+    enrolls: [_enrolls]
+    trials: [_trials_f, _trials_m]
+  - name: de_test
+    data: de_test
+    enrolls: [_enrolls]
+    trials: [_trials_f, _trials_m]
 
 eval_steps:  # all metrics in this list will be computed in the evaluation. Remove entry to skip
   privacy:
@@ -71,7 +63,7 @@ eval_steps:  # all metrics in this list will be computed in the evaluation. Remo
 
 privacy:
   asv:
-    dataset_name: [en_dev, en_test, de_dev, de_test, fr_dev, fr_test, es_dev, es_test, cn_dev, cn_test, ja_dev_nonpara30, ja_test_nonpara30, ja_dev_parallel100, ja_test_parallel100]
+    dataset_name: [en_dev, en_test, de_dev, de_test, fr_dev, fr_test, es_dev, es_test, cn_dev, cn_test, ja_dev, ja_test]
     model_name: asv_ssl
     model_type: sslecapa
 
@@ -87,8 +79,7 @@ privacy:
 
 utility:
   asr:
-    dataset_name: [en_dev, en_test, de_dev, de_test, fr_dev, fr_test, es_dev, es_test, cn_dev, cn_test, ja_dev_nonpara30, ja_test_nonpara30, ja_dev_parallel100, ja_test_parallel100]
-
+    dataset_name: [en_dev, en_test, de_dev, de_test, fr_dev, fr_test, es_dev, es_test, cn_dev, cn_test, ja_dev, ja_test]
     model_name: openai/whisper-large-v3 # name for ASR model, asr_pre_transformer_transformerlm + EncoderDecoderASR or asr_pre_ctc_wav2vec2 + EncoderASR
 
     evaluation:
