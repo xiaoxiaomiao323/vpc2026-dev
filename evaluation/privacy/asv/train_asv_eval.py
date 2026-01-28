@@ -1,8 +1,8 @@
 from copy import deepcopy
 import torch
 from .asv_train.train_speaker_embeddings import train_asv_speaker_embeddings
-from .asv_train.train_speaker_embeddings_ssl import  train_asv_speaker_embeddings_ssl
-# from .asv_train.train_speaker_embeddings_ssl_ft import  train_asv_speaker_embeddings_ssl_ft
+# from .asv_train.train_speaker_embeddings_ssl import  train_asv_speaker_embeddings_ssl
+from .asv_train.train_speaker_embeddings_ssl_ft import  train_asv_speaker_embeddings_ssl_ft
 
 # For more information, see parse_arguments() in
 # https://github.com/speechbrain/blob/develop/ speechbrain/speechbrain/core.py
@@ -92,6 +92,6 @@ def asv_train_speechbrain_ssl(train_params, output_dir):
         sb_run_opts['data_parallel_backend'] = True
     # train_asv_speaker_embeddings(config, hparams, run_opts=sb_run_opts)
     if train_params["finetuning"]:
-        train_asv_speaker_embeddings_ssl(config, hparams, run_opts=sb_run_opts)
+        train_asv_speaker_embeddings_ssl_ft(config, hparams, run_opts=sb_run_opts)
     else:
         print("Finetuning is False! Please change it to 'True' to finetune using Ecapa_SSL model")

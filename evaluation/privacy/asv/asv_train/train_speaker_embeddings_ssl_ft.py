@@ -209,41 +209,51 @@ class SpeakerBrain(sb.core.Brain):
 
         return loss
     
+    # def on_stage_start(self, stage, epoch=None):
+    #     # Unfreeze all parameters first (reset state)
+    #     for module in [self.modules.compute_features, self.modules.mean_var_norm,
+    #                        self.modules.embedding_model, self.modules.classifier]:
+    #         for p in module.parameters():
+    #             p.requires_grad = True
+        
+    #     # --- Embedding Model Freeze Logic for Epoch 1 ---
+    #     # In epoch 1, we want to freeze embedding_model but DDP doesn't allow requires_grad=False.
+    #     if stage == sb.Stage.TRAIN and epoch == 1:
+    #         print("[FREEZE LOGIC] Epoch 1: Saving initial embedding_model state_dict...")
+    #         print("[FREEZE LOGIC] Embedding model will be reset after each batch (effectively frozen).")
+    #         print("[FREEZE LOGIC] Only compute_features, mean_var_norm, and classifier will be updated.")
+            
+    #         # Get the state dict - handle DDP wrapper
+    #         if hasattr(self.modules.embedding_model, 'module'):
+    #             # DDP wrapped
+    #             state_dict = self.modules.embedding_model.module.state_dict()
+    #         else:
+    #             state_dict = self.modules.embedding_model.state_dict()
+            
+    #         # Deep copy to ensure independent copy
+    #         self._frozen_embedding_state = copy.deepcopy(state_dict)
+            
+    #         # Save to disk as backup
+    #         frozen_path = os.path.join(self.hparams.output_folder, "frozen_embedding_model.ckpt")
+    #         torch.save(self._frozen_embedding_state, frozen_path)
+    #         print(f"[FREEZE LOGIC] Saved frozen embedding state to: {frozen_path}")
+        
+    #     elif stage == sb.Stage.TRAIN and epoch >= 2:
+    #         # Clear frozen state - embedding model will train normally
+    #         if hasattr(self, '_frozen_embedding_state') and self._frozen_embedding_state is not None:
+    #             print(f"[FREEZE LOGIC] Epoch {epoch}: Clearing frozen state. Embedding model will now train normally.")
+    #             self._frozen_embedding_state = None
+
+    #     if stage != sb.Stage.TRAIN:
+    #         self.error_metrics = self.hparams.error_stats()
     def on_stage_start(self, stage, epoch=None):
+        """Gets called at the beginning of an epoch."""
         # Unfreeze all parameters first (reset state)
         for module in [self.modules.compute_features, self.modules.mean_var_norm,
                            self.modules.embedding_model, self.modules.classifier]:
             for p in module.parameters():
                 p.requires_grad = True
         
-        # --- Embedding Model Freeze Logic for Epoch 1 ---
-        # In epoch 1, we want to freeze embedding_model but DDP doesn't allow requires_grad=False.
-        if stage == sb.Stage.TRAIN and epoch == 1:
-            print("[FREEZE LOGIC] Epoch 1: Saving initial embedding_model state_dict...")
-            print("[FREEZE LOGIC] Embedding model will be reset after each batch (effectively frozen).")
-            print("[FREEZE LOGIC] Only compute_features, mean_var_norm, and classifier will be updated.")
-            
-            # Get the state dict - handle DDP wrapper
-            if hasattr(self.modules.embedding_model, 'module'):
-                # DDP wrapped
-                state_dict = self.modules.embedding_model.module.state_dict()
-            else:
-                state_dict = self.modules.embedding_model.state_dict()
-            
-            # Deep copy to ensure independent copy
-            self._frozen_embedding_state = copy.deepcopy(state_dict)
-            
-            # Save to disk as backup
-            frozen_path = os.path.join(self.hparams.output_folder, "frozen_embedding_model.ckpt")
-            torch.save(self._frozen_embedding_state, frozen_path)
-            print(f"[FREEZE LOGIC] Saved frozen embedding state to: {frozen_path}")
-        
-        elif stage == sb.Stage.TRAIN and epoch >= 2:
-            # Clear frozen state - embedding model will train normally
-            if hasattr(self, '_frozen_embedding_state') and self._frozen_embedding_state is not None:
-                print(f"[FREEZE LOGIC] Epoch {epoch}: Clearing frozen state. Embedding model will now train normally.")
-                self._frozen_embedding_state = None
-
         if stage != sb.Stage.TRAIN:
             self.error_metrics = self.hparams.error_stats()
 
@@ -279,33 +289,33 @@ class SpeakerBrain(sb.core.Brain):
                 name=f"epoch_{epoch}_latest",
             )
             
-    def on_fit_batch_end(self, batch, outputs, loss, should_step):
-        """Called at the end of each fit_batch.
+    # def on_fit_batch_end(self, batch, outputs, loss, should_step):
+    #     """Called at the end of each fit_batch.
         
-        V2: Resets embedding_model to frozen state after each optimizer step in epoch 1.
-        This effectively "freezes" the embedding model while still allowing gradients
-        to flow (required for DDP).
-        """
-        # Call parent implementation if it exists
-        if hasattr(super(), 'on_fit_batch_end'):
-            super().on_fit_batch_end(batch, outputs, loss, should_step)
+    #     V2: Resets embedding_model to frozen state after each optimizer step in epoch 1.
+    #     This effectively "freezes" the embedding model while still allowing gradients
+    #     to flow (required for DDP).
+    #     """
+    #     # Call parent implementation if it exists
+    #     if hasattr(super(), 'on_fit_batch_end'):
+    #         super().on_fit_batch_end(batch, outputs, loss, should_step)
         
-        # Only reset embedding model during epoch 1 after optimizer step
-        if should_step and hasattr(self, '_frozen_embedding_state') and self._frozen_embedding_state is not None:
-            # Reset embedding model weights to frozen state
-            frozen_state = self._frozen_embedding_state
+    #     # Only reset embedding model during epoch 1 after optimizer step
+    #     if should_step and hasattr(self, '_frozen_embedding_state') and self._frozen_embedding_state is not None:
+    #         # Reset embedding model weights to frozen state
+    #         frozen_state = self._frozen_embedding_state
             
-            # Handle DDP wrapper
-            if hasattr(self.modules.embedding_model, 'module'):
-                # DDP wrapped - load into the inner module
-                self.modules.embedding_model.module.load_state_dict(frozen_state, strict=True)
-            else:
-                self.modules.embedding_model.load_state_dict(frozen_state, strict=True)
+    #         # Handle DDP wrapper
+    #         if hasattr(self.modules.embedding_model, 'module'):
+    #             # DDP wrapped - load into the inner module
+    #             self.modules.embedding_model.module.load_state_dict(frozen_state, strict=True)
+    #         else:
+    #             self.modules.embedding_model.load_state_dict(frozen_state, strict=True)
             
-            # Debug print (every 100 steps to reduce log spam)
-            if self.step >=250:
-                self._frozen_embedding_state = None
-                print(f"[FREEZE LOGIC] Step {self.step}: Reset embedding_model to frozen state.")
+    #         # Debug print (every 100 steps to reduce log spam)
+    #         if self.step >=250:
+    #             self._frozen_embedding_state = None
+    #             print(f"[FREEZE LOGIC] Step {self.step}: Reset embedding_model to frozen state.")
                 
                 
     def fit_batch(self, batch):
