@@ -18,8 +18,8 @@ else
 fi
 echo "Using config: $anon_config"
 
-force_compute=
-force_compute='--force_compute True'
+
+force_compute='--force_compute False'
 
 # JSON to modify run_evaluation(s) configs, see below
 eval_overwrite="{"
@@ -39,11 +39,11 @@ python run_anonymization.py --config ${anon_config} ${force_compute}
 # Perform libri dev+test & IEMOCAP dev+test pre evaluation using pretrained ASR/ASV/SER models
 python run_evaluation.py --config $(dirname ${anon_config})/eval_pre.yaml --overwrite "${eval_overwrite}" ${force_compute}
 
-# Train post ASV using anonymized libri-360 and perform libri dev+test post evaluation
-# ASV training takes ~2hours
+# # Train post ASV using anonymized libri-360 and perform libri dev+test post evaluation
+# # ASV training takes ~2hours
 python run_evaluation.py --config $(dirname ${anon_config})/eval_post.yaml --overwrite "${eval_overwrite}" ${force_compute}
 
-# Merge results
+# # Merge results
 results_summary_path_orig=$(python3 -c "from hyperpyyaml import load_hyperpyyaml; f = open('$(dirname ${anon_config})/eval_pre.yaml'); print(load_hyperpyyaml(f, ${eval_overwrite}).get('results_summary_path', ''))")
 results_summary_path_anon=$(python3 -c "from hyperpyyaml import load_hyperpyyaml; f = open('$(dirname ${anon_config})/eval_post.yaml'); print(load_hyperpyyaml(f, ${eval_overwrite}).get('results_summary_path', ''))")
 [[ "$results_summary_path_anon" == *"_test_tool"* ]] && exit 0

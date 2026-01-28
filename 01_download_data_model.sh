@@ -103,6 +103,21 @@ if [ ! -d "data/IEMOCAP/wav/Session1" ]; then
     fi
 fi
 
+model=asv_ssl
+if [ ! -d "exp/$model" ]; then
+    mkdir -p exp
+    cd exp
+    if [ ! -f .${model}.zip ]; then
+        echo "Download pretrained $model models pre-trained..."
+        wget -O ${model}.zip https://duke.app.box.com/shared/static/na6grb7akap4ze66stiazp2azw4zb1f1
+        mv ${model}.zip .${model}.zip
+    fi
+    echo "Unpacking pretrained evaluation models"
+    unzip .${model}.zip
+    cd ../
+fi
+
+
 # IEMOCAP_full_release
 if [ ! -d "data/IEMOCAP/wav/Session1" ]; then
     mkdir -p ./data/IEMOCAP/

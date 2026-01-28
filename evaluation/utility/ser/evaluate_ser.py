@@ -17,10 +17,7 @@ class FoldSERDataset(torch.utils.data.Dataset):
         data = []
         utt2spk = read_kaldi_format(data_path / "utt2spk")
         for utt_id, wav_file in read_kaldi_format(data_path / "wav.scp").items():
-            try:
-                wav, sr = torchaudio.load_with_torchcodec(str(wav_file))
-            except AttributeError:
-                wav, sr = torchaudio.load(str(wav_file))
+            wav, sr = torchaudio.load(str(wav_file))
             wav_len = wav.shape
             spk = utt2spk[utt_id]
             data.append((utt_id, spk, wav, wav_len))

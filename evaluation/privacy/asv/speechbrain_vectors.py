@@ -94,7 +94,7 @@ class SpeechBrainVectors:
         logging.info(f"Loading {savedir}")
 
 
-        if vec_type == 'sslecapa':
+        if vec_type == 'ecapa_ssl':
             # Load model and processor
             self.processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
             self.model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
@@ -141,7 +141,7 @@ class SpeechBrainVectors:
        
     def extract_vector(self, audio, sr, wav_path=None):
 
-        if self.vec_type == 'sslecapa':
+        if self.vec_type == 'ecapa_ssl':
             filtered_logits=None
             audio = torch.tensor(np.trim_zeros(audio.cpu().numpy()))
             if len(audio.shape) == 1:

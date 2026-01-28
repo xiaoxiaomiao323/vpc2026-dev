@@ -17,8 +17,8 @@ datasets:
     data: libri_test
     enrolls: [_enrolls]
     trials: [_trials_f, _trials_m]
-  #- name: train-clean-360
-  #  data: train-clean-360
+  - name: train-clean-360
+    data: train-clean-360
 
 modules:
   anon_suffix: !ref <anon_suffix>
@@ -32,4 +32,4 @@ modules:
   # model_tag_version: "hifigan_bn_tdnnf_600h_vq_48_v1"   # This is B6
   model_tag_version: "hifigan_bn_tdnnf_wav2vec2_vq_48_v1" # This is B5
   device: "cuda"
-  batch_size: 8 # works with GPU < 12Gib
+  batch_size: 32 # works with GPU < 12Gib

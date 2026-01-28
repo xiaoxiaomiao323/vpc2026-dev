@@ -6,10 +6,10 @@ anon_data_suffix: _mcadams # added to transform data/libri_dev/ to data/libri_de
 results_summary_path: !ref <exp_dir>/results_summary/eval_orig<anon_data_suffix>/results_orig.txt
 
 datasets:
-  - name: IEMOCAP_dev
-    data: IEMOCAP_dev
-  - name: IEMOCAP_test
-    data: IEMOCAP_test
+  # - name: IEMOCAP_dev
+  #   data: IEMOCAP_dev
+  # - name: IEMOCAP_test
+  #   data: IEMOCAP_test
   - name: libri_dev
     data: libri_dev
     enrolls: [_enrolls]
@@ -23,15 +23,15 @@ datasets:
 eval_steps:  # all metrics in this list will be computed in the evaluation. Remove entry to skip
   privacy:
     - asv
-  utility:
-    - asr
-    - ser
+  # utility:
+  #   - asr
+  #   - ser
 
 privacy:
   asv:
     dataset_name: [libri_dev, libri_test]
-    model_name: asv_orig
-    model_type: ecapa
+    model_name: asv_ssl
+    model_type: ecapa_ssl #'xvector', 'ecapa','ecapa_ssl'
 
     evaluation:
       model_dir: !ref <exp_dir>/<privacy[asv][model_name]>  # path to existing ASV model or output for trained ASV model

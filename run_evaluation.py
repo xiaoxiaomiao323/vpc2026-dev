@@ -118,6 +118,7 @@ if __name__ == '__main__':
                         shutil.rmtree(model_dir, ignore_errors=True)
                     train_asv_eval(train_params=asv_train_params, output_dir=model_dir)
                     logger.info("ASV training time: %f min ---" % (float(time.time() - start_time) / 60))
+                    # breakpoint()
                     model_dir = scan_checkpoint(model_dir, 'CKPT')
                     shutil.copy(asv_train_params['train_config'], model_dir)
                     shutil.copy(asv_train_params['infer_config'], model_dir)
