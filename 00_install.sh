@@ -51,7 +51,7 @@ compute_and_write_hash() {
 EOF
 source ./env.sh
 
-compute_and_write_hash "requirements.txt"  # SHA256: 18198de8f6d028adda206658653ea0139d369b2e6ff24fcab2fe0dbf3ceadecb
+compute_and_write_hash "requirements.txt"  # SHA256: 1d311916683d7c7be810d6fac5bab16e399743c3e851f27de95246e74dd4a537
 trigger_new_install ".micromamba/micromamba .done-*"
 
 mark=.done-venv
@@ -152,13 +152,14 @@ if [ ! -f $mark ]; then
   # Match torchvision version to PyTorch version
   # PyTorch 2.8.0 uses torchvision 0.23.0+cu128 (0.19.0 not available in cu128)
   if [[ "$TORCH_VERSION" == "2.8."* ]]; then
-    torchvision_version="==0.23.0+cu$pytorch_cuda"
+      torchvision_version="==0.23.0+cu$pytorch_cuda"
+      torchcodec_version="==0.7"
   else
     torchvision_version="==0.24.1+cu$pytorch_cuda"
   fi
   torchaudio_version="==$TORCH_VERSION+cu$pytorch_cuda"
-  echo -e "\npip3 install torch$version torchvision$torchvision_version torchaudio$torchaudio_version --force-reinstall --index-url https://download.pytorch.org/whl/cu$pytorch_cuda\n"
-  pip3 install torch$version torchvision$torchvision_version torchaudio$torchaudio_version --force-reinstall --index-url https://download.pytorch.org/whl/cu$pytorch_cuda \
+  echo -e "\npip3 install torch$version torchvision$torchvision_version torchaudio$torchaudio_version torchcodec${torchcodec_version} --force-reinstall --index-url https://download.pytorch.org/whl/cu$pytorch_cuda\n"
+  pip3 install torch$version torchvision$torchvision_version torchaudio$torchaudio_version torchcodec${torchcodec_version} --force-reinstall --index-url https://download.pytorch.org/whl/cu$pytorch_cuda \
     || { echo "Failed to find pytorch $TORCH_VERSION for cuda '$CUDA_VERSION', use specify other torch/cuda version (with variables in install.sh script)"  ; exit 1; }
   python3 -c "import torch; print('Torch version:', torch.__version__)" || exit 1
   echo -e "torch$version\ntorchvision$torchvision_version\ntorchaudio$torchaudio_version" > .pip_constraints.txt

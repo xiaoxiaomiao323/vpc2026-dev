@@ -319,7 +319,10 @@ def prepare_csv(seg_dur, wav_lst, utt2spk, csv_file, random_segment=False, amp_t
             entry.append(csv_line)
         else:
             #audio_duration = signal.shape[0] / SAMPLERATE
-            signal, fs = torchaudio.load(wav_file)
+            try:
+                signal, fs = torchaudio.load_with_torchcodec(wav_file)
+            except AttributeError:
+                signal, fs = torchaudio.load(wav_file)
             signal = signal.squeeze(0)
 
             uniq_chunks_list = _get_chunks(seg_dur, audio_id, audio_duration)

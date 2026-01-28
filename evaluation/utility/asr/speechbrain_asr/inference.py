@@ -15,7 +15,10 @@ class ASRDataset(torch.utils.data.Dataset):
     def __init__(self, wav_scp_file, asr_model):
         data = []
         for utt_id, wav_file in read_kaldi_format(wav_scp_file).items():
-            signal, sr = torchaudio.load(str(wav_file))
+            try:
+                signal, sr = torchaudio.load_with_torchcodec(str(wav_file))
+            except AttributeError:
+                signal, sr = torchaudio.load(str(wav_file))
             wav = asr_model.audio_normalizer(signal.squeeze(), sr)
             #wav = asr_model.load_audio(wav_file)
             wav_len = len(wav.squeeze())
