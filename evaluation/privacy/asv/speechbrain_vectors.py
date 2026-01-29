@@ -96,10 +96,11 @@ class SpeechBrainVectors:
 
         if vec_type == 'ecapa_ssl':
             # Load model and processor
-            self.processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
-            self.model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
-            self.model.to(self.device)
-            self.model.eval()
+            # breakpoint()
+            # self.processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
+            # self.model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
+            # self.model.to(self.device)
+            # self.model.eval()
             
             self.extractor = ECAPA_TDNN_test().to(device)
             checkpoint = torch.load(model_path / "embedding_model.ckpt", map_location=device)
@@ -107,7 +108,7 @@ class SpeechBrainVectors:
             # strip module. prefix
             new_state = { k[len('module.'):] if k.startswith('module.') else k : v
                         for k, v in state_dict.items() }
-            res = self.extractor.load_state_dict(new_state, strict=False)
+            res = self.extractor.load_state_dict(new_state, strict=True)
             print(res)  # shows missing/unexpected
             self.extractor.eval()
 

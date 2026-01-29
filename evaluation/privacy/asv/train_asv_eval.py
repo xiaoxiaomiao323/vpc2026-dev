@@ -65,7 +65,7 @@ def asv_train_speechbrain(train_params, output_dir):
 
 
 def asv_train_speechbrain_ssl(train_params, output_dir):
-    breakpoint()
+    # breakpoint()
     logger.info(f'Train ASV model: {output_dir}')
     hparams = {
         'pretrained_path': str(train_params['pretrained_model']),

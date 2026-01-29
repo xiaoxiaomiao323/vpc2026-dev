@@ -344,7 +344,7 @@ def train_asv_speaker_embeddings_ssl(config_file, hparams_file, run_opts):
     
     hparams['modules']['embedding_model'] = ecapa_ssl
     hparams['checkpointer'].add_recoverable('embedding_model', ecapa_ssl)
-    breakpoint()
+    # breakpoint()
     # Init model
     speaker_brain = SpeakerBrain(
         modules=hparams["modules"],
