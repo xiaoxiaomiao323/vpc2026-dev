@@ -146,6 +146,9 @@ if __name__ == '__main__':
                             raise ValueError(f"{name} is missing an ASV enrolls/trials split")
                         eval_pairs.extend([(f'{d["data"]}{enroll}', f'{d["data"]}{trial}')
                                           for enroll, trial in itertools.product(d['enrolls'], d['trials'])])
+                if not (model_dir / "WavLM-Large.pt").is_file():
+                    shutil.copy2(params['privacy']['asv']['training']['pretrained_wavlm_model'],model_dir)
+                    print(f"Copied WavLM-Large.pt to {model_dir}")
                 asv_results = evaluate_asv(eval_datasets=eval_pairs, eval_data_dir=eval_data_dir,
                                            params=asv_params, device=device,  model_dir=model_dir,
                                            anon_data_suffix=anon_suffix)

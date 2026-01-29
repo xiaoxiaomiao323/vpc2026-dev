@@ -284,10 +284,10 @@ class SpeakerBrain(sb.core.Brain):
                 min_keys=["ErrorRate"],
                 name=epoch
             )
-            self.checkpointer.save_checkpoint(
-                meta={"epoch": epoch, "loss": stage_loss},
-                name=f"epoch_{epoch}_latest",
-            )
+            # self.checkpointer.save_checkpoint(
+            #     meta={"epoch": epoch, "loss": stage_loss},
+            #     name=f"epoch_{epoch}_latest",
+            # )
             
     # def on_fit_batch_end(self, batch, outputs, loss, should_step):
     #     """Called at the end of each fit_batch.

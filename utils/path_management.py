@@ -29,18 +29,37 @@ def remove_contents_in_dir(dir_name:Path):
 
 
 
+# def scan_checkpoint(cp_dir, prefix):
+#     pattern = os.path.join(cp_dir, prefix + '*****')
+#     cp_list = glob.glob(pattern)
+#     if len(cp_list) == 0:
+#         return None
+
+#     try:
+#         cp_list_by_name = sorted([(int(ckpt.split(prefix)[-1]), ckpt) for ckpt in cp_list])
+#         return Path(cp_list_by_name[-1][1])
+#     except ValueError:
+#         # Handle the case where conversion to int fails
+#         return None
 def scan_checkpoint(cp_dir, prefix):
-    pattern = os.path.join(cp_dir, prefix + '*****')
+    pattern = os.path.join(cp_dir, prefix + '*')
     cp_list = glob.glob(pattern)
-    if len(cp_list) == 0:
+
+    numeric_ckpts = []
+
+    for ckpt in cp_list:
+        name = os.path.basename(ckpt)
+        suffix = name[len(prefix):]
+
+        # matches "123" or "+123" only
+        if re.fullmatch(r"\+?\d+", suffix):
+            numeric = int(suffix.lstrip("+"))
+            numeric_ckpts.append((numeric, ckpt))
+
+    if not numeric_ckpts:
         return None
 
-    try:
-        cp_list_by_name = sorted([(int(ckpt.split(prefix)[-1]), ckpt) for ckpt in cp_list])
-        return Path(cp_list_by_name[-1][1])
-    except ValueError:
-        # Handle the case where conversion to int fails
-        return None
+    return Path(max(numeric_ckpts)[1])
 
 
 def get_datasets(config):
