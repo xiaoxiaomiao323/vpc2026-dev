@@ -27,7 +27,7 @@ import torch
 
 from evaluation import evaluate_asv, train_asv_eval, evaluate_asr, evaluate_ser
 from utils import parse_yaml, scan_checkpoint, combine_asr_data, \
-                   save_yaml, check_dependencies, setup_logger, check_kaldi_formart_data
+                   save_yaml, check_dependencies, setup_logger, check_kaldi_formart_data, limit_utts_per_speaker
 
 logger = setup_logger(__name__)
 
@@ -129,6 +129,8 @@ if __name__ == '__main__':
                 logger.info('======================')
                 model_dir = params['privacy']['asv']['evaluation']['model_dir']
                 results_dir = params['privacy']['asv']['evaluation']['results_dir']
+                if asv_train_params["num_utt_per_spk"]!="ALL":
+                    limit_utts_per_speaker(asv_train_params['train_data_dir'],int(asv_train_params["num_utt_per_spk"]))
                 if args.force_compute.lower() == "true":
                     for info in os.walk(results_dir / f"{params['privacy']['asv']['evaluation']['distance']}_out"):
                         dir, _, _ = info
