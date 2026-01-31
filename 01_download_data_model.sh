@@ -100,7 +100,6 @@ if [ ! -d "exp/$model" ]; then
     fi
     echo "Unpacking pretrained evaluation models"
     unzip .${model}.zip
-    cd ../
 fi
 
 if [ ! -d "data/IEMOCAP/wav/Session1" ]; then
