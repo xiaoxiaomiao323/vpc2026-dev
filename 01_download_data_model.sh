@@ -95,7 +95,7 @@ model=ser
 if [ ! -d "exp/$model" ]; then
     if [ ! -f .${model}.zip ]; then
         echo "Download pretrained $model models pre-trained..."
-        wget -O ${model}.zip https://duke.app.box.com/shared/static/b09bseyzogqyqqzuozmxl2v8jyenhdpd
+        wget -O ${model}.zip https://duke.app.box.com/shared/static/9rvl8hz7vr3lnhpyiv7npjmtufvpws9n
         mv ${model}.zip .${model}.zip
     fi
     echo "Unpacking pretrained evaluation models"
