@@ -3,6 +3,7 @@ import shutil
 import os
 import glob
 from multiprocessing import Manager
+import re
 
 def create_clean_dir(dir_name:Path, force:bool = True):
     if dir_name.exists() and force:
