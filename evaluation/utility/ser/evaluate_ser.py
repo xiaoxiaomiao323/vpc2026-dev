@@ -6,7 +6,7 @@ import warnings
 
 from pathlib import Path
 from sklearn.metrics import recall_score, accuracy_score
-from speechbrain.pretrained.interfaces import foreign_class
+from speechbrain.inference.interfaces import foreign_class
 from utils import read_kaldi_format, scan_checkpoint, setup_logger
 
 logger = setup_logger(__name__)
