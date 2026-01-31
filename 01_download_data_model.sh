@@ -78,7 +78,7 @@ if [ ! -d $check_data ]; then
     unzip .data.zip
 fi
 
-for model in asv_orig ser asr; do
+for model in asv_orig asr; do
     if [ ! -d "exp/$model" ]; then
         if [ ! -f .${model}.zip ]; then
             echo "Download pretrained $model models pre-trained..."
@@ -89,6 +89,19 @@ for model in asv_orig ser asr; do
         unzip .${model}.zip
     fi
 done
+
+
+model=ser
+if [ ! -d "exp/$model" ]; then
+    if [ ! -f .${model}.zip ]; then
+        echo "Download pretrained $model models pre-trained..."
+        wget -O ${model}.zip https://duke.app.box.com/shared/static/b09bseyzogqyqqzuozmxl2v8jyenhdpd
+        mv ${model}.zip .${model}.zip
+    fi
+    echo "Unpacking pretrained evaluation models"
+    unzip .${model}.zip
+    cd ../
+fi
 
 if [ ! -d "data/IEMOCAP/wav/Session1" ]; then
     if [ ! -z $iemocap_corpus ]; then
