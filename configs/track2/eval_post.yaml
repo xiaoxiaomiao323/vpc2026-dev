@@ -2,7 +2,7 @@ data_dir: data
 exp_dir: exp
 model_type_global: ecapa_ssl # ecapa or xvector or ecapa_ssl
 
-anon_data_suffix: _mcadams # added to transform data/libri_dev/ to data/libri_dev_mcadams/
+anon_data_suffix: _ssl # added to transform data/libri_dev/ to data/libri_dev_mcadams/
 
 results_summary_path: !ref <exp_dir>/results_summary/eval_anon<anon_data_suffix>/results_anon.txt
 
@@ -36,11 +36,11 @@ privacy:
       pretrained_model: exp/asv_ssl/embedding_model.ckpt # path to pretrained model, only used for finetuning
       pretrained_wavlm_model: exp/asv_ssl/WavLM-Large.pt # path to pretrained model, only used for ecapa_ssl training, should be a .pth path
       lr: 0.01
-      epochs: 3
-      batch_size: 16
+      epochs: 1
+      batch_size: 8
       num_workers: 10 #increse this can speed up the training process
       num_utt: ALL # ALL or specific number, number of utterances per speaker
-      num_utt_per_spk: ALL # ALL or specific number, number of utterances per speaker
+      num_utt_per_spk: 50 # ALL or specific number, number of utterances per speaker
       utt_selection: spk-diverse-sess # select utterances per speaker and session (spk-sess), per speaker and randomly across all sessions (spk-random), per speaker and balanced across sessions (spk-diverse-sess)
       num_spk: ALL # ALL or specific number, number of speakers
       retrain: true # retrain in any case (true) or skip training if model exists (false)
