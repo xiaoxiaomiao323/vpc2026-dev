@@ -6,7 +6,7 @@ import warnings
 
 from pathlib import Path
 from sklearn.metrics import recall_score, accuracy_score
-from speechbrain.pretrained.interfaces import foreign_class
+from speechbrain.inference.interfaces import foreign_class
 from utils import read_kaldi_format, scan_checkpoint, setup_logger
 
 logger = setup_logger(__name__)
@@ -17,10 +17,7 @@ class FoldSERDataset(torch.utils.data.Dataset):
         data = []
         utt2spk = read_kaldi_format(data_path / "utt2spk")
         for utt_id, wav_file in read_kaldi_format(data_path / "wav.scp").items():
-            try:
-                wav, sr = torchaudio.load_with_torchcodec(str(wav_file))
-            except AttributeError:
-                wav, sr = torchaudio.load(str(wav_file))
+            wav, sr = torchaudio.load(str(wav_file))
             wav_len = wav.shape
             spk = utt2spk[utt_id]
             data.append((utt_id, spk, wav, wav_len))

@@ -27,7 +27,7 @@ import torch
 
 from evaluation import evaluate_asv, train_asv_eval, evaluate_asr, evaluate_ser
 from utils import parse_yaml, scan_checkpoint, combine_asr_data, \
-                   save_yaml, check_dependencies, setup_logger, check_kaldi_formart_data
+                   save_yaml, check_dependencies, setup_logger, check_kaldi_formart_data, limit_utts_per_speaker
 
 logger = setup_logger(__name__)
 
@@ -109,6 +109,8 @@ if __name__ == '__main__':
             if 'training' in asv_params:
                 model_dir = params['privacy']['asv']['training']['model_dir']
                 asv_train_params = asv_params['training']
+                if asv_train_params["num_utt_per_spk"]!="ALL":
+                    limit_utts_per_speaker(asv_train_params['train_data_dir'],int(asv_train_params["num_utt_per_spk"]))
                 if not model_dir.exists() or asv_train_params.get('retrain', True) is True:
                     start_time = time.time()
                     logger.info('====================')
@@ -118,6 +120,7 @@ if __name__ == '__main__':
                         shutil.rmtree(model_dir, ignore_errors=True)
                     train_asv_eval(train_params=asv_train_params, output_dir=model_dir)
                     logger.info("ASV training time: %f min ---" % (float(time.time() - start_time) / 60))
+                    # breakpoint()
                     model_dir = scan_checkpoint(model_dir, 'CKPT')
                     shutil.copy(asv_train_params['train_config'], model_dir)
                     shutil.copy(asv_train_params['infer_config'], model_dir)
@@ -145,6 +148,9 @@ if __name__ == '__main__':
                             raise ValueError(f"{name} is missing an ASV enrolls/trials split")
                         eval_pairs.extend([(f'{d["data"]}{enroll}', f'{d["data"]}{trial}')
                                           for enroll, trial in itertools.product(d['enrolls'], d['trials'])])
+                if not (model_dir / "WavLM-Large.pt").is_file():
+                    shutil.copy2(params['privacy']['asv']['training']['pretrained_wavlm_model'],model_dir)
+                    print(f"Copied WavLM-Large.pt to {model_dir}")
                 asv_results = evaluate_asv(eval_datasets=eval_pairs, eval_data_dir=eval_data_dir,
                                            params=asv_params, device=device,  model_dir=model_dir,
                                            anon_data_suffix=anon_suffix)
