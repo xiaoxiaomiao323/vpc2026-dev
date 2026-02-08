@@ -37,6 +37,7 @@ class NACPipeline(Pipeline):
 
 
     def run_anonymization_pipeline(self, datasets):
+        logger.info('Running NAC (normal pipeline)...')
         # create result folder if needed
         results_dir = self.config['results_dir']
         if not os.path.isdir(results_dir):

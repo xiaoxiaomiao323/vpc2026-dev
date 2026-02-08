@@ -29,6 +29,7 @@ class NACPipeline(Pipeline):
 
 
     def run_anonymization_pipeline(self, datasets):
+        logger.info('Running NAC with Accelerate...')
         checkpoint_dir = os.path.expanduser(self.config['modules']['model']['checkpoint_dir'])
         voice_dir = self.config['modules']['model']['voice_dir']  # only one voice dir for now
         results_dir = self.config['data_dir']
@@ -54,14 +55,18 @@ class NACPipeline(Pipeline):
                 'accelerate', 'launch',
                 '--config_file', 'anonymization/modules/nac/accelerate_config.yaml',
                 f'--num_processes={len(self.devices)}',
+            ]
+
+            if len(self.devices) > 1:
+                args_to_run.append(f'--gpu_ids=' + ','.join([str(dv.index) for dv in self.devices]))
+
+            args_to_run.extend([
                 'anonymization/pipelines/nac/inference.py', scp_file, ds_out_folder, checkpoint_dir,
                 '--data_root', root,
                 '--voice_dir', str(voice_dir),
                 '--ds_type', ds_type,
                 '--target_rate', '16000'
-            ]
-            if len(self.devices) > 1:
-                args_to_run.append(f'--gpu_ids=' + ','.join([str(dv.index) for dv in self.devices]))
+            ])
 
             if subprocess.run(args_to_run).returncode != 0:
                 exit(1)
