@@ -5,17 +5,16 @@ set -e
 source env.sh
 
 ### Variables
+#select track
+track=track2 #track1, track2
 
 # Select the anonymization pipeline
 if [ -n "$1" ]; then
   anon_config=$1
 else
-  #anon_config=configs/anon_mcadams.yaml
-  # anon_config=configs/anon_sttts.yaml
-  # anon_config=configs/anon_template.yaml
-  # anon_config=configs/anon_asrbn.yaml
-  # anon_config=configs/anon_nac.yaml
-  anon_config=configs/anon_ssl.yaml
+  # anon_config=configs/$trackanon_sttts.yaml
+  # anon_config=configs/$track/anon_nac.yaml
+  anon_config=configs/$track/anon_ssl.yaml
 fi
 echo "Using config: $anon_config"
 
@@ -38,11 +37,7 @@ echo python run_anonymization.py --config ${anon_config} ${force_compute}
 python run_anonymization.py --config ${anon_config} ${force_compute}
 
 # Perform libri dev+test & IEMOCAP dev+test pre evaluation using pretrained ASR/ASV/SER models
-python run_evaluation.py --config $(dirname ${anon_config})/eval_pre_mls_ssl.yaml --overwrite "${eval_overwrite}" ${force_compute}
-
-# Train post ASV using anonymized libri-360 and perform libri dev+test post evaluation
-# ASV training takes ~2hours
-#python run_evaluation.py --config $(dirname ${anon_config})/eval_post.yaml --overwrite "${eval_overwrite}" ${force_compute}
+python run_evaluation.py --config $(dirname ${anon_config})/$track/eval_pre.yaml --overwrite "${eval_overwrite}" ${force_compute}
 
 # Merge results
 results_summary_path_orig=$(python3 -c "from hyperpyyaml import load_hyperpyyaml; f = open('$(dirname ${anon_config})/eval_pre.yaml'); print(load_hyperpyyaml(f, ${eval_overwrite}).get('results_summary_path', ''))")
