@@ -128,6 +128,17 @@ if [ ! -d "exp/$model" ]; then
     cd ../
 fi
 
+train-clean-360-list=train-clean-360-5
+if [ ! -d "data/${train-clean-360-list}" ]; then
+    if [ ! -f .${train-clean-360-list}.zip ]; then
+        echo "Download train-clean-360-list..."
+        wget -O ${train-clean-360-list}.zip https://duke.app.box.com/shared/static/ixxjlcjndsxj4dwolz24crw3ksn8j5z4
+        mv ${train-clean-360-list}.zip .${train-clean-360-list}.zip
+    fi
+    echo "Unpacking train-clean-360-list"
+    unzip .${train-clean-360-list}.zip
+fi
+
 
 # IEMOCAP_full_release
 if [ ! -d "data/IEMOCAP/wav/Session1" ]; then
