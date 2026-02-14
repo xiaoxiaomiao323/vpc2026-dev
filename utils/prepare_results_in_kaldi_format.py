@@ -119,8 +119,15 @@ def check_kaldi_formart_data(config):
         dataset_dict[ori_train_data_name] = Path(config['data_dir'], ori_train_data_name)
 
     for dataset, orig_dataset_path in dataset_dict.items():
-        out_data_split = output_path / f'{dataset}{suffix}'
+        out_data_split = Path(output_path) / f'{dataset}{suffix}'
         if not os.path.exists(out_data_split):
             logger.error(f"Directory {out_data_split} does not exist. Please save your anonymized audio there.")
             exit(1)
-    logger.info(f"Checked dataset_dict: {list(dataset_dict.keys())}.")
+        # Generate/copy Kaldi format files for anon dir (utt2spk, text, wav.scp, etc.) from original or anon wavs
+        ori_folder = Path(output_path) / dataset
+        if ori_folder.is_dir():
+            required_files = [f for f in os.listdir(ori_folder) if os.path.isfile(ori_folder / f)]
+            check_files(ori_folder, out_data_split, required_files)
+        else:
+            logger.warning(f"Original folder {ori_folder} does not exist; cannot copy/generate Kaldi files for {out_data_split}.")
+    logger.info(f"Checked and prepared Kaldi files for dataset_dict: {list(dataset_dict.keys())}.")
