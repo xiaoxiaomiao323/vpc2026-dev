@@ -1,4 +1,5 @@
 import shutil
+import warnings
 
 from tqdm import tqdm
 from pathlib import Path
@@ -35,7 +36,9 @@ def extraction_job(params):
         wav_path = info['path']
         if isinstance(wav_path, list):
             wav_path = wav_path[1]
-        signal, fs = torchaudio.load(wav_path)
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning, module="torchaudio")
+            signal, fs = torchaudio.load(wav_path)
         # if len(signal.shape) == 2:
         #     signal = signal.squeeze(0)
         norm_wave = normalize_wave(signal, fs, device=device)
