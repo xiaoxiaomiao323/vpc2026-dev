@@ -108,7 +108,7 @@ def create_wavscp_formart_data(ori_folder, anon_folder):
 
 def check_kaldi_formart_data(config):
     logger.info('Check data directories format..')
-    # 1) check datastes exist: anonymized dev$suffix test$suffix and anonymized train-clean-360$suffix
+    # Only check that anonymized dataset dirs from config exist: dev$suffix, test$suffix, train-clean-360$suffix, etc.
     dataset_dict = get_datasets(config)
     output_path = config['data_dir']
     suffix = config['anon_data_suffix']
@@ -118,16 +118,16 @@ def check_kaldi_formart_data(config):
         ori_train_data_name = config['train_data_name'].split(suffix)[0]
         dataset_dict[ori_train_data_name] = Path(config['data_dir'], ori_train_data_name)
 
-    anon_folders = [folder for folder in os.listdir(output_path) if os.path.isdir(os.path.join(output_path, folder)) and folder.endswith(suffix) and 'asr_' not in folder]
     for dataset, orig_dataset_path in dataset_dict.items():
-        out_data_split = output_path / f'{dataset}{suffix}'
+        out_data_split = Path(output_path) / f'{dataset}{suffix}'
         if not os.path.exists(out_data_split):
             logger.error(f"Directory {out_data_split} does not exist. Please save your anonymized audio there.")
             exit(1)
-    # 2) check files in datasets exits and correct
-    for anon_folder in anon_folders:
-        anon_folder = output_path / anon_folder
-        ori_folder =  output_path / os.path.basename(anon_folder).split(suffix)[0]
-        required_files = [file for file in os.listdir(ori_folder) if os.path.isfile(os.path.join(ori_folder, file))]
-        check_files(ori_folder, anon_folder, required_files)
-    logger.info(f"{anon_folders} folders checked.")
+        # Generate/copy Kaldi format files for anon dir (utt2spk, text, wav.scp, etc.) from original or anon wavs
+        ori_folder = Path(output_path) / dataset
+        if ori_folder.is_dir():
+            required_files = [f for f in os.listdir(ori_folder) if os.path.isfile(ori_folder / f)]
+            check_files(ori_folder, out_data_split, required_files)
+        else:
+            logger.warning(f"Original folder {ori_folder} does not exist; cannot copy/generate Kaldi files for {out_data_split}.")
+    logger.info(f"Checked and prepared Kaldi files for dataset_dict: {list(dataset_dict.keys())}.")
