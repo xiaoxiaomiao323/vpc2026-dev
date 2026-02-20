@@ -11,8 +11,8 @@ for track 1:
 
 for track2:
 - `01_download_data_model_track2.sh`
-- `02_run_track2.sh`
-- `02_run_track2_post.sh`
+- `02_run_track2.sh` # lazy-EER, ASR, UAR
+- `02_run_track2_post.sh` # semi-EER
 
 # Recipe for VoicePrivacy Challenge 2024
 
