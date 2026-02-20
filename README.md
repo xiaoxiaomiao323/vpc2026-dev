@@ -4,9 +4,15 @@
 1. `git clone https://github.com/xiaoxiaomiao323/vpc2026-dev.git`
 2. `./00_install.sh`
 3. `source env.sh`
-4. `./01_download_data_model_track2.sh`
-5. `bash 02_run_mls.sh`
 
+for track 1: 
+- `bash 01_download_data_model_track1.sh`
+- `02_run_track1.sh`
+
+for track2:
+- `01_download_data_model_track2.sh`
+- `02_run_track2.sh`
+- `02_run_track2_post.sh`
 
 # Recipe for VoicePrivacy Challenge 2024
 
