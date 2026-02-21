@@ -35,8 +35,8 @@ privacy:
       pretrained_model: exp/asv_ssl/embedding_model.ckpt # path to pretrained model, only used for finetuning
       pretrained_wavlm_model: exp/asv_ssl/WavLM-Large.pt # path to pretrained model, only used for ecapa_ssl training, should be a .pth path
       lr: 0.01
-      epochs: 4
-      batch_size: 16
+      epochs: 2
+      batch_size: 32
       num_workers: 2 #increse this can speed up the training process
       num_utt: ALL # ALL or specific number, number of utterances per speaker
       utt_selection: spk-diverse-sess # select utterances per speaker and session (spk-sess), per speaker and randomly across all sessions (spk-random), per speaker and balanced across sessions (spk-diverse-sess)
