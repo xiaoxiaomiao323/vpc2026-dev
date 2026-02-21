@@ -48,12 +48,23 @@ def _eval_ser_speechbrain(eval_datasets, eval_data_dir, models_path, anon_data_s
         for spkfold, fold in read_kaldi_format(data_path / "spk2fold").items():
             if fold not in classifiers:
                 model_dir = models_path / f"fold_{fold}"
-                model_dir = scan_checkpoint(model_dir, 'CKPT')
+                ckpt_dir = scan_checkpoint(model_dir, 'CKPT')
+                if ckpt_dir is None:
+                    raise FileNotFoundError(
+                        f"No SER checkpoint found in {model_dir}. "
+                        "Train the SER model first."
+                    )
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore")
+                    # Use ckpt_dir (CKPT+1): its hyperparams.yaml has pretrainer.
+                    # model_dir (fold_X) has training hyperparams without pretrainer;
+                    # fetch prefers savedir/hyperparams.yaml when it exists.
                     classifiers[fold] = foreign_class(
-                        source=model_dir, savedir=model_dir, run_opts={'device': device},
-                        classname="CustomEncoderWav2vec2Classifier", pymodule_file="custom_interface.py",
+                        source=ckpt_dir,
+                        savedir=ckpt_dir,
+                        run_opts={'device': device},
+                        classname="CustomEncoderWav2vec2Classifier",
+                        pymodule_file="custom_interface.py",
                     )
                 classifiers[fold].hparams.label_encoder.ignore_len()
             hyp, ref, per_emo = [], [], {}
