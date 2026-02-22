@@ -53,6 +53,8 @@ dataloader_options:
     batch_size: !ref <batch_size>
     shuffle: !ref <shuffle>
     num_workers: !ref <num_workers>
+    drop_last: True  # avoid batch_size=1 at epoch end (BatchNorm fails)
+
 
 # Functions
 compute_features: !new:speechbrain.lobes.features.Fbank
