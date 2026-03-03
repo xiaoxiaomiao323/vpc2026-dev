@@ -7,13 +7,12 @@ source env.sh
 # librispeech_corpus=PATH_TO_Librispeech
 # iemocap_corpus=PATH_TO_IEMOCAP
 
-for data_set in libri_dev libri_test; do
-    if [ ! -d "data/$data_set" ]; then
-        echo "Downloading $data_set..."
-        wget -O $data_set.zip https://duke.app.box.com/shared/static/37dg9nzq5gwe254d6dhxgngk2g8dcuzz
-        unzip $data_set.zip
-    fi
-done
+if [ ! -d "data/libri_dev" ]; then
+    echo "Downloading ..."
+    wget -O track1_evaldata.zip https://duke.app.box.com/shared/static/37dg9nzq5gwe254d6dhxgngk2g8dcuzz
+    unzip track1_evaldata.zip
+fi
+
 
 
 check=corpora/LibriSpeech/train-clean-360
