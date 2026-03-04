@@ -13,13 +13,16 @@ track=track2 #track1, track2
 if [ -n "$1" ]; then
   anon_config=$1
 else
-  # anon_config=configs/$track/anon_sttts.yaml
-  anon_config=configs/$track/anon_ssl.yaml
+  anon_config=configs/$track/anon_BM1.yaml
+  #anon_config=configs/$track/anon_BM2.yaml
 fi
 echo "Using config: $anon_config"
 
+# to force recompute
+force_compute='--force_compute True'
+# to not recompute
 force_compute=
-force_compute='--force_compute False'
+
 
 # JSON to modify run_evaluation(s) configs, see below
 eval_overwrite="{"
@@ -35,14 +38,20 @@ else
 fi
 echo $anon_suffix
 # Generate anonymized audio (multilang dev+test set & emotion_track2)
-echo "Running anonymization..."
 python run_anonymization.py --config ${anon_config} ${force_compute}
 
 # Perform multilang dev+test & emotion_track2 pre evaluation using pretrained ASR/ASV/SER models
 python run_evaluation.py --config $(dirname ${anon_config})/eval_pre.yaml --overwrite "${eval_overwrite}" ${force_compute}
 
 # Merge results
-results_summary_path_orig=$(python3 -c "from hyperpyyaml import load_hyperpyyaml; f = open('$(dirname ${anon_config})/eval_pre.yaml'); print(load_hyperpyyaml(f, ${eval_overwrite}).get('results_summary_path', ''))")
+config_dir=$(dirname ${anon_config})
+results_summary_path_orig=$(eval_overwrite="${eval_overwrite}" config_dir="${config_dir}" python3 -c "
+import os, json
+from hyperpyyaml import load_hyperpyyaml
+overwrite = json.loads(os.environ.get('eval_overwrite', '{}'))
+f = open(os.environ['config_dir'] + '/eval_pre.yaml')
+print(load_hyperpyyaml(f, overwrite).get('results_summary_path', ''))
+")
 
 
 results_exp=exp/results_summary/$track
@@ -53,12 +62,4 @@ cp "${results_summary_path_orig}" "${results_exp}/result_for_rank${anon_suffix}"
 [ -f "exp/openai/whisper-large-v3/results${anon_suffix}.csv" ] && cp "exp/openai/whisper-large-v3/results${anon_suffix}.csv" "${results_exp}/asr_results${anon_suffix}.csv"
 [ -f "exp/ser_emotion2vec/results${anon_suffix}.csv" ] && cp "exp/ser_emotion2vec/results${anon_suffix}.csv" "${results_exp}/ser_results${anon_suffix}.csv"
 [ -f "exp/asv_ssl/results${anon_suffix}.csv" ] && cp "exp/asv_ssl/results${anon_suffix}.csv" "${results_exp}/asv_results${anon_suffix}.csv"
-# Zip for submission (result_for_rank is primary; CSVs and exp outputs for inspection)
-# Include exp/asv_ssl but exclude track1 (libri_*)
-zip ${results_exp}/result_for_submission${anon_suffix}.zip -r \
-  -x "*libri*" \
-  "${results_exp}/result_for_rank${anon_suffix}" \
-  exp/openai exp/ser_emotion2vec exp/asv_ssl \
-  exp/results_summary/*${anon_suffix}* \
-  ${results_exp}/*.csv \
-  > /dev/null 2>&1 || true
+# Zip for submission (result_for_rank + CSVs only; no models)
