@@ -43,18 +43,18 @@ There are two options:
 1. Run anonymization and evaluation: `./02_run.sh configs/anon_mcadams.yaml`.  
     For each anonymization baseline, there is a corresponding config file:
     -  #### [Anonymization using the McAdams coefficient](https://arxiv.org/abs/2011.01130): **B2**
-         [`configs/anon_mcadams.yaml`](configs/anon_mcadams.yaml)  A fast CPU-only signal processing-based system  (default).
+         [`configs/track1/anon_mcadams.yaml`](configs/track1/anon_mcadams.yaml)  A fast CPU-only signal processing-based system  (default).
 
     -  #### [Anonymization using phonetic transcriptions and GAN (STTTS)](https://ieeexplore.ieee.org/document/10096607): **B3**
-         [`configs/anon_sttts.yaml`](configs/anon_sttts.yaml)  A system based on unmodified phone sequence, modified prosody, modified speaker embedding representations and speech synthesis.
+         [`configs/track1/anon_sttts.yaml`](configs/track1/anon_sttts.yaml)  A system based on unmodified phone sequence, modified prosody, modified speaker embedding representations and speech synthesis.
 
     -  #### [Anonymization using **n**eural audio codec (NAC) language modeling](https://arxiv.org/abs/2309.14129): **B4**
 
-        [`configs/anon_nac.yaml`](configs/anon_nac.yaml) 
+        [`configs/track1/anon_nac.yaml`](configs/track1/anon_nac.yaml) 
 
     -  #### [Anonymization using ASR-BN with vector quantization (VQ)](https://arxiv.org/abs/2308.04455): **B5** 
 
-        [`configs/anon_asrbn.yaml`](configs/anon_asrbn.yaml) A fast system based on vector quantized acoustic bottleneck, pitch, and one-hot speaker representations and  a HiFi-GAN speech synthesis model.
+        [`configs/track1/anon_asrbn.yaml`](configs/track1/anon_asrbn.yaml) A fast system based on vector quantized acoustic bottleneck, pitch, and one-hot speaker representations and  a HiFi-GAN speech synthesis model.
 
     
       
