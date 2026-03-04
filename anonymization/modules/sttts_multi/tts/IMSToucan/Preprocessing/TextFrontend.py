@@ -601,7 +601,7 @@ class ArticulatoryCombinedTextFrontend:
                                                         preserve_punctuation=True,
                                                         language_switch='remove-flags',
                                                         with_stress=self.use_stress,
-                                                        logger=logging.getLogger(__file__))
+                                                        logger=None)# logging.getLogger(__file__))
             except RuntimeError:
                 print("Error in loading espeak! \n"
                       "Maybe espeak is not installed on your system? \n"

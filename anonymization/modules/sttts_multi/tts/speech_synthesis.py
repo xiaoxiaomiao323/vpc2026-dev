@@ -17,7 +17,7 @@ class SpeechSynthesis:
         self.output_sr = settings.get('output_sr', 16000)
         self.save_output = save_output
         self.force_compute = force_compute if force_compute else settings.get('force_compute_synthesis', False)
-        lang = settings.get('lang', 'en')
+        lang = settings.get('lang', 'eng')
         logger.info(f'Use language {lang}')
 
         synthesizer_type = settings.get('synthesizer', 'ims')
