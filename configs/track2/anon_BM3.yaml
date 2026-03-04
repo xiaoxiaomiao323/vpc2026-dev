@@ -2,7 +2,7 @@ data_dir: data
 results_dir: data # output example ./data/mls_german_ssl
 
 pipeline: sttts_multi
-anon_suffix: !ref _BM2
+anon_suffix: !ref _BM3
 
 datasets:
   - name: emodata_track2_dev
@@ -75,15 +75,6 @@ modules:
     anon_level_spk: []
     anon_level_utt: [emodata_track2_dev, emodata_track2_test, en_dev, en_test, de_dev, de_test, fr_dev, fr_test, es_dev, es_test]
 
-  prosody:
-    extractor_type: ims
-    force_compute_extraction: false
-    aligner_model_path: !ref <models_dir>/aligner.pt
-    extraction_results_path: !ref <intermediate_dir>/original_prosody/ims_extractor
-    anonymizer_type: ims
-    random_offset_lower: 60
-    random_offset_higher: 140
-    anon_results_path: !ref <intermediate_dir>/anon_prosody/random_offsets
 
   tts:
     synthesizer: ims
@@ -91,5 +82,5 @@ modules:
     hifigan_path: !ref <models_dir>/Vocoder.pt
     embeddings_path: !ref <models_dir>/spkrec-ecapa-voxceleb
     output_sr: 16000
-    results_path: !ref <intermediate_dir>/anon_speech/ims_sttts_multi
+    results_path: !ref <intermediate_dir>/anon_speech/ims_sttts_multi_no_pc
 
