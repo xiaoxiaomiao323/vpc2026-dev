@@ -1,3 +1,14 @@
+# Recipe for VoicePrivacy Challenge 2026
+
+Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for more information about the Challenge.
+
+## Data submission
+The anonymization and evaluation scripts should have generated the files and the directories with the explained format of `$anon_data_suffix` suffix.  
+For data submission, the following command submit everything given a `$anon_data_suffix` argument:
+```
+VPC_DROPBOX_KEY=XXX VPC_DROPBOX_SECRET=YYY VPC_DROPBOX_REFRESHTOKEN=ZZZ VPC_TEAM=TEAM_NAME ./03_upload_submission.sh $anon_data_suffix
+```
+`VPC_DROPBOX_KEY`, `VPC_DROPBOX_SECRET`, `VPC_DROPBOX_REFRESHTOKEN`, and `VPC_TEAM=TEAM_NAME` are sent individually to each team upon receiving their system description.  
 
 ## Install
 
@@ -19,34 +30,12 @@ For track2:
 
 3. Run Track 2 post evaluation (semi-informed EER):```bash 02_run_track2_post.sh```
 
-# Recipe for VoicePrivacy Challenge 2024
-
-Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for more information about the Challenge.
-
-## Data submission
-The anonymization and evaluation scripts should have generated the files and the directories with the explained format of `$anon_data_suffix` suffix.  
-For data submission, the following command submit everything given a `$anon_data_suffix` argument:
-```
-VPC_DROPBOX_KEY=XXX VPC_DROPBOX_SECRET=YYY VPC_DROPBOX_REFRESHTOKEN=ZZZ VPC_TEAM=TEAM_NAME ./03_upload_submission.sh $anon_data_suffix
-```
-`VPC_DROPBOX_KEY`, `VPC_DROPBOX_SECRET`, `VPC_DROPBOX_REFRESHTOKEN`, and `VPC_TEAM=TEAM_NAME` are sent individually to each team upon receiving their system description.  
-
-## Install
-
-1. `git clone https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2024.git`
-2. `./00_install.sh`
-3. `source env.sh`
-
-## Download data
-
-`./01_download_data_model.sh` 
-A password is required; please register to get the password.  
-
 You can modify the `librispeech_corpus` variable of `./01_download_data_model.sh` to avoid downloading LibriSpeech 360.  
 You have to modify the `iemocap_corpus` variable of `./01_download_data_model.sh` to where it is located on your server.  
 
 > [!IMPORTANT]  
 > The [IEMOCAP](https://sail.usc.edu/iemocap/iemocap_release.htm) corpus must be downloaded on your own by submitting a request at https://sail.usc.edu/iemocap/iemocap_release.htm. The waiting time may take up to 7-9 days.
+
 
 
 ## Anonymization and Evaluation
@@ -63,13 +52,11 @@ There are two options:
 
         [`configs/anon_nac.yaml`](configs/anon_nac.yaml) 
 
-    -  #### [Anonymization using ASR-BN with vector quantization (VQ)](https://arxiv.org/abs/2308.04455): **B5** and **B6** 
+    -  #### [Anonymization using ASR-BN with vector quantization (VQ)](https://arxiv.org/abs/2308.04455): **B5** 
 
         [`configs/anon_asrbn.yaml`](configs/anon_asrbn.yaml) A fast system based on vector quantized acoustic bottleneck, pitch, and one-hot speaker representations and  a HiFi-GAN speech synthesis model.
 
-      - #### ⚠ [Anonymization using x-vectors and a neural source-filter model](https://www.isca-archive.org/interspeech_2020/srivastava20_interspeech.pdf): **B1**
-        anonymization scripts from https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022 can be used to obtain anonymized data for B1. To perform utterance-level  (in contrast to speaker-level) anonymization of the enrollment and trial data for B1, the corresponding parameters should be setup in  [https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/config.sh](config.sh): `anon_level_trials=utt` and `anon_level_enroll=utt` (https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/d72b50c44677aa9a1ba37b7f0c383c4fde13e05f/baseline/config.sh#L59-L60)
-      
+    
       
 2. Run anonymization and evaluation separately in two steps:
 
@@ -85,12 +72,10 @@ The names of the created dataset folders for anonymized audio files are appended
 
 ```log
 data/libri_dev_enrolls${anon_data_suffix}/wav/*wav
-data/libri_dev_trials_m${anon_data_suffix}/wav/*wav
-data/libri_dev_trials_f${anon_data_suffix}/wav/*wav
+data/libri_dev_trials_mixed${anon_data_suffix}/wav/*wav
 
 data/libri_test_enrolls${anon_data_suffix}/wav/*wav
-data/libri_test_trials_m${anon_data_suffix}/wav/*wav
-data/libri_test_trials_f${anon_data_suffix}/wav/*wav
+data/libri_test_trials_mixed${anon_data_suffix}/wav/*wav
 
 data/IEMOCAP_dev${anon_data_suffix}/wav/*wav
 data/IEMOCAP_test${anon_data_suffix}/wav/*wav
@@ -111,12 +96,10 @@ To run evaluation for arbitrary anonymized data:
 1. prepare 9 anonymized folders each containing the anonymized wav files:
 ```log
 data/libri_dev_enrolls${anon_data_suffix}/wav/*wav
-data/libri_dev_trials_m${anon_data_suffix}/wav/*wav
-data/libri_dev_trials_f${anon_data_suffix}/wav/*wav
+data/libri_dev_trials_mixed${anon_data_suffix}/wav/*wav
 
 data/libri_test_enrolls${anon_data_suffix}/wav/*wav
-data/libri_test_trials_m${anon_data_suffix}/wav/*wav
-data/libri_test_trials_f${anon_data_suffix}/wav/*wav
+data/libri_test_trials_mixed${anon_data_suffix}/wav/*wav
 
 data/IEMOCAP_dev${anon_data_suffix}/wav/*wav
 data/IEMOCAP_test${anon_data_suffix}/wav/*wav
@@ -139,7 +122,7 @@ results_exp=exp/results_summary
 zip ${results_exp}/result_for_submission${anon_data_suffix}.zip -r exp/asr/*${anon_data_suffix} exp/asr/*${anon_data_suffix}.csv exp/ser/*${anon_data_suffix}.csv exp/results_summary/*${anon_data_suffix}* exp/asv_orig/*${anon_data_suffix} exp/asv_orig/*${anon_data_suffix}.csv exp/asv_anon${anon_data_suffix}
 ```
 
-> All of the above steps are automated in [02_run.sh](./02_run.sh).
+> All of the above steps are automated in [02_run_.sh](./02_run.sh).
 
 ## Results
 #### Note, that WER results are computed on the trials part
@@ -149,12 +132,10 @@ The result file with all the metrics and all datasets for submission will be gen
 
 Please see the [RESULTS folder](./results) for the provided anonymization baselines:
 
-* [Results B1](./results/result_for_rank_b1b)
 * [Results B2](./results/result_for_rank_mcadams)
 * [Results B3](./results/result_for_rank_sttts)
 * [Results B4](./results/result_for_rank_nac)
 * [Results B5](./results/result_for_rank_asrbn_hifigan_bn_tdnnf_wav2vec2_vq_48_v1)
-* [Results B6](./results/result_for_rank_asrbn_hifigan_bn_tdnnf_600h_vq_48_v1)
 
 ## General information
 
@@ -203,7 +184,7 @@ Contact: organisers@lists.voiceprivacychallenge.org
 
 ## License
 
-Copyright (C) 2024
+Copyright (C) 2026
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
